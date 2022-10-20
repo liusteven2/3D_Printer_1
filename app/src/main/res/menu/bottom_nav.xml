@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Home"
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"/>
+    <item android:title="Library"
+        android:id="@+id/library"
+        android:icon="@drawable/ic_baseline_local_library_24"/>
+    <item android:title="Formatting"
+        android:id="@+id/formatting"
+        android:icon="@drawable/ic_baseline_print_24"/>
+    <item android:title="Settings"
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_baseline_settings_24"/>
+</menu>
