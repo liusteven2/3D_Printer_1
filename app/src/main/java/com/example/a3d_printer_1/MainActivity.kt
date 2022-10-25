@@ -8,7 +8,7 @@ import java.text.Normalizer
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityMainBinding
+    private lateinit var binding : ActivityMainBinding //make sure to check out viewbinding video
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

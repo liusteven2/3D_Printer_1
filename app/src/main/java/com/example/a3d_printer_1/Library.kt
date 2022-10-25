@@ -5,55 +5,105 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.a3d_printer_1.databinding.ActivityMainBinding
+import com.example.a3d_printer_1.databinding.FragmentLibraryBinding
+import com.google.firebase.database.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Library.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Library : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    //creating recyclerview and receiving information from firebase
+    private lateinit var dbref : DatabaseReference
+    private lateinit var userRecyclerView: RecyclerView
+    private lateinit var userArrayList : ArrayList<User>
+
+    //for sending information to firebase database
+    private lateinit var binding : ActivityMainBinding
+    private lateinit var database : DatabaseReference
+//    private var fragmentLibraryBinding : FragmentLibraryBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_library, container, false)
+////        // Inflate the layout for this fragment
+////        return inflater.inflate(R.layout.fragment_library, container, false)
+//
+//
+//        //for sending information to firebase database
+////        binding = ActivityMainBinding.inflate(LayoutInflater)
+////        binding.submitBtn.seton
+//        val view: View = inflater!!.inflate(R.layout.fragment_library, container, false)
+//        submitBtn.setOnClickListener {
+//
+//        }
+//        binding.submitBtn.onClick {
+//            showToast("hello binding!")
+//        }
+//        return view
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val btn : Button = view.findViewById(R.id.submitBtn)
+        btn.setOnClickListener{
+            val editText : EditText = view.findViewById(R.id.ediText)
+            val input = editText.text.toString()
+//            val bundle = Bundle()
+//            bundle.putString("data",input)
+//            val fragment = Formatting()
+//            fragment.arguments = bundle
+//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+            database = FirebaseDatabase.getInstance().getReference("Users")
+            val User = User(input)
+            database.child(input).setValue(User).addOnSuccessListener {
+                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Library.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Library().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //for receiving firebase data into recyclerview
+        val layoutManager = LinearLayoutManager(context)
+
+        userRecyclerView = view.findViewById(R.id.recycler_view)
+        userRecyclerView.layoutManager = layoutManager
+        userRecyclerView.setHasFixedSize(true)
+
+        userArrayList = arrayListOf<User>()
+        getUserData()
+    }
+
+
+    private fun getUserData() {
+        dbref = FirebaseDatabase.getInstance().getReference("Users")
+
+        dbref.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    for (userSnapshot in snapshot.children){
+                        val user = userSnapshot.getValue(User::class.java)
+                        userArrayList.add(user!!) //note double exclamation points will throw an exception on null value
+                    }
+                    userRecyclerView.adapter = MyAdapter(userArrayList)
                 }
             }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
     }
 }

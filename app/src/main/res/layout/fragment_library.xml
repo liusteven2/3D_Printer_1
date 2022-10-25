@@ -16,11 +16,57 @@
         android:layout_gravity="center_horizontal"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/userList"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="647dp"
+        android:layout_height="489dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        tools:listitem="@layout/user_item"/>
+        android:layout_marginTop="120dp"
+        tools:listitem="@layout/user_item" />
+
+    <EditText
+        android:id="@+id/submitBtn"
+        android:layout_width="360dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingLeft="20dp"
+        android:hint="First Name"
+        android:layout_marginTop="130dp"/>
+
+    <Button
+        android:layout_marginTop="180dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
 
 </FrameLayout>
+
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="#800000"-->
+<!--        tools:context=".Library">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:text="Library Fragment"-->
+<!--        android:textSize="26dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.497"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--&lt;!&ndash;    <androidx.recyclerview.widget.RecyclerView&ndash;&gt;-->
+<!--&lt;!&ndash;        android:id="@+id/userList"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        android:layout_height="647dp"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintBottom_toBottomOf="parent"&ndash;&gt;-->
+<!--&lt;!&ndash;        app:layout_constraintTop_toBottomOf="@+id/textView2"&ndash;&gt;-->
+<!--&lt;!&ndash;        tools:listitem="@layout/user_item" />&ndash;&gt;-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
