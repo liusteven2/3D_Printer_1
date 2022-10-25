@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1054509968048",
+    "project_id": "d-printer-b61f0",
+    "storage_bucket": "d-printer-b61f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054509968048:android:72627e711884791aeba975",
+        "android_client_info": {
+          "package_name": "com.example.a3d_printer_1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1054509968048-l086c4aluvlg5437pfc1rnj7l449lodj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByfW_y7_1fEOLJ3P-DcicZIOR69U1-Cd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1054509968048-l086c4aluvlg5437pfc1rnj7l449lodj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

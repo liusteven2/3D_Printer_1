@@ -25,7 +25,7 @@ class Home : Fragment() {
             bundle.putString("data",input)
             val fragment = Formatting()
             fragment.arguments = bundle
-            childFragmentManager?.beginTransaction()?.replace(R.id.bottomNavigationView,fragment)?.commit()
+            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
         }
             return view
     }
