@@ -24,7 +24,7 @@
         tools:listitem="@layout/user_item" />
 
     <EditText
-        android:id="@+id/submitBtn"
+        android:id="@+id/submitEdittext"
         android:layout_width="360dp"
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
@@ -33,6 +33,7 @@
         android:layout_marginTop="130dp"/>
 
     <Button
+        android:id="@+id/submitBtn"
         android:layout_marginTop="180dp"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
