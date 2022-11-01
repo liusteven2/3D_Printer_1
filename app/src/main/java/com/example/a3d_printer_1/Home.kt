@@ -7,9 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 
 class Home : Fragment() {
+
+    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -17,19 +22,30 @@ class Home : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val btn : Button = view.findViewById(R.id.button)
+        val btn : Button = view.findViewById(R.id.applyBtn)
         btn.setOnClickListener{
-            val editText : EditText = view.findViewById(R.id.ediText)
+            val editText : EditText = view.findViewById(R.id.applyEdittext)
             val input = editText.text.toString()
-            val bundle = Bundle()
-            bundle.putString("data",input)
-            val fragment = Formatting()
-            fragment.arguments = bundle
-            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
-        }
-            return view
-    }
 
+            //below is for communicating to another fragment
+//            val bundle = Bundle()
+//            bundle.putString("data",input)
+//            val fragment = Formatting()
+//            fragment.arguments = bundle
+//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+            //above is for communicating to another fragment
+
+            database = FirebaseDatabase.getInstance().getReference("Users")
+            val User = User(input)
+            database.child(input).setValue(User).addOnSuccessListener {
+                editText.text.clear()
+                Toast.makeText(activity, "Successfully Saved", Toast.LENGTH_SHORT).show()
+            }.addOnFailureListener{
+                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show()
+            }
+        }
+        return view
+    }
 }
 
 

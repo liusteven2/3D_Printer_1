@@ -14,13 +14,13 @@
 <!--        android:textSize="26dp"-->
 <!--        android:layout_gravity="center"/>-->
     <EditText
-        android:id="@+id/ediText"
+        android:id="@+id/applyEdittext"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/applyBtn"
         android:layout_marginTop="70dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
