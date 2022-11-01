@@ -19,8 +19,8 @@ class Library : Fragment() {
 //
 //    //creating recyclerview and receiving information from firebase
 //    private lateinit var dbref : DatabaseReference
-//    private lateinit var userRecyclerView: RecyclerView
-//    private lateinit var userArrayList : ArrayList<User>
+    private lateinit var userRecyclerView: RecyclerView
+    private lateinit var userArrayList : ArrayList<User>
 
     //for sending information to firebase database
     private lateinit var database : DatabaseReference
@@ -65,40 +65,40 @@ class Library : Fragment() {
     }
 
 
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        //for receiving firebase data into recyclerview
-//        val layoutManager = LinearLayoutManager(context)
-//
-//        userRecyclerView = view.findViewById(R.id.recycler_view)
-//        userRecyclerView.layoutManager = layoutManager
-//        userRecyclerView.setHasFixedSize(true)
-//
-//        userArrayList = arrayListOf<User>()
-//        getUserData()
-//    }
 
-//
-//    private fun getUserData() {
-//        dbref = FirebaseDatabase.getInstance().getReference("Users")
-//
-//        dbref.addValueEventListener(object : ValueEventListener{
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                if (snapshot.exists()){
-//                    for (userSnapshot in snapshot.children){
-//                        val user = userSnapshot.getValue(User::class.java)
-//                        userArrayList.add(user!!) //note double exclamation points will throw an exception on null value
-//                    }
-//                    userRecyclerView.adapter = MyAdapter(userArrayList)
-//                }
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                TODO("Not yet implemented")
-//            }
-//
-//        })
-//    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //for receiving firebase data into recyclerview
+        val layoutManager = LinearLayoutManager(context)
+
+        userRecyclerView = view.findViewById(R.id.recycler_view)
+        userRecyclerView.layoutManager = layoutManager
+        userRecyclerView.setHasFixedSize(true)
+
+        userArrayList = arrayListOf<User>()
+        getUserData()
+    }
+
+
+    private fun getUserData() {
+        database = FirebaseDatabase.getInstance().getReference("Users")
+
+        database.addValueEventListener(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    for (userSnapshot in snapshot.children){
+                        val user = userSnapshot.getValue(User::class.java)
+                        userArrayList.add(user!!) //note double exclamation points will throw an exception on null value
+                    }
+                    userRecyclerView.adapter = MyAdapter(userArrayList)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
 }
