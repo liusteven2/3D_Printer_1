@@ -17,16 +17,16 @@ class Home : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val btn : Button = view.findViewById(R.id.button)
-        btn.setOnClickListener{
-            val editText : EditText = view.findViewById(R.id.ediText)
-            val input = editText.text.toString()
-            val bundle = Bundle()
-            bundle.putString("data",input)
-            val fragment = Formatting()
-            fragment.arguments = bundle
-            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
-        }
+//        val btn : Button = view.findViewById(R.id.button)
+//        btn.setOnClickListener{
+//            val editText : EditText = view.findViewById(R.id.ediText)
+//            val input = editText.text.toString()
+//            val bundle = Bundle()
+//            bundle.putString("data",input)
+//            val fragment = Formatting()
+//            fragment.arguments = bundle
+//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+//        }
             return view
     }
 

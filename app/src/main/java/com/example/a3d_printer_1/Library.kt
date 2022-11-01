@@ -49,41 +49,36 @@ class Library : Fragment() {
 //        }
 //        return view
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val btn : Button = view.findViewById(R.id.submitBtn)
-        btn.setOnClickListener{
-            val editText : EditText = view.findViewById(R.id.ediText)
-            val input = editText.text.toString()
-//            val bundle = Bundle()
-//            bundle.putString("data",input)
-//            val fragment = Formatting()
-//            fragment.arguments = bundle
-//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
-            database = FirebaseDatabase.getInstance().getReference("Users")
-            val User = User(input)
-            database.child(input).setValue(User).addOnSuccessListener {
-                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
-            }.addOnFailureListener {
-                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
-            }
-        }
+//        val btn : Button = view.findViewById(R.id.submitBtn)
+//        btn.setOnClickListener{
+//            val editText : EditText = view.findViewById(R.id.ediText)
+//            val input = editText.text.toString()
+////            database = FirebaseDatabase.getInstance().getReference("Users")
+////            val User = User(input)
+////            database.child(input).setValue(User).addOnSuccessListener {
+////                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
+////            }.addOnFailureListener {
+////                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+////            }
+//        }
         return view
     }
 
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        //for receiving firebase data into recyclerview
-        val layoutManager = LinearLayoutManager(context)
-
-        userRecyclerView = view.findViewById(R.id.recycler_view)
-        userRecyclerView.layoutManager = layoutManager
-        userRecyclerView.setHasFixedSize(true)
-
-        userArrayList = arrayListOf<User>()
-        getUserData()
-    }
+//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onViewCreated(view, savedInstanceState)
+//
+////        //for receiving firebase data into recyclerview
+////        val layoutManager = LinearLayoutManager(context)
+////
+////        userRecyclerView = view.findViewById(R.id.recycler_view)
+////        userRecyclerView.layoutManager = layoutManager
+////        userRecyclerView.setHasFixedSize(true)
+////
+////        userArrayList = arrayListOf<User>()
+//////        getUserData()
+//    }
 
 
     private fun getUserData() {
