@@ -3,16 +3,171 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
+    android:background="#800000"
     tools:context=".Formatting">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:id="@+id/textView"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Formatting Fragment"
-        android:textSize="26dp"
-        android:layout_gravity="center"/>
+        android:textSize="20dp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/white" />
+
+    <!--    visual text and numPicker for Extruder Temperature-->
+    <TextView
+        android:id="@+id/textView_ExtTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="65dp"
+        android:layout_marginRight="85dp"
+        android:text="Edit Extruder Temp"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="100dp">
+
+
+    <NumberPicker
+            android:id="@+id/numPickerExtTemp"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+        android:theme="@style/AppTheme.Picker">
+
+
+        </NumberPicker>
+
+    </LinearLayout>
+
+
+    <!--    visual text and numPicker for Bed Temperature-->
+    <TextView
+        android:id="@+id/textView_BedTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="165dp"
+        android:layout_marginRight="85dp"
+        android:text="Edit Bed Temp"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="100dp">
+
+        <NumberPicker
+            android:id="@+id/numPickerBedTemp"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:theme="@style/AppTheme.Picker">
+
+
+        </NumberPicker>
+
+    </LinearLayout>
+
+    <!--    visual text and numPicker for Fan Speed Position-->
+    <TextView
+        android:id="@+id/textView_FanSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="265dp"
+        android:layout_marginRight="85dp"
+        android:text="Edit Fan Speed"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="230dp"
+        android:layout_marginLeft="100dp"
+        android:theme="@style/AppTheme.Picker">
+
+
+        <NumberPicker
+            android:id="@+id/numPickerFanSpeed"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:theme="@style/AppTheme.Picker">
+
+
+        </NumberPicker>
+
+    </LinearLayout>
+
+
+<!--    visual text and numPicker for Extruder Position-->
+    <TextView
+        android:id="@+id/textView_ExtPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="365dp"
+        android:layout_marginRight="85dp"
+        android:text="Edit Extruder Pos"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="330dp"
+        android:layout_marginLeft="100dp"
+        android:theme="@style/AppTheme.Picker">
+
+        <NumberPicker
+            android:id="@+id/numPickerX"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:theme="@style/AppTheme.Picker">
+
+        </NumberPicker>
+
+        <NumberPicker
+            android:id="@+id/numPickerY"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:theme="@style/AppTheme.Picker">
+
+        </NumberPicker>
+
+        <NumberPicker
+            android:id="@+id/numPickerZ"
+            android:layout_width="30dp"
+            android:layout_height="100dp"
+            android:theme="@style/AppTheme.Picker">
+
+        </NumberPicker>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonApply"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="450dp"
+        android:background="@drawable/slightly_rounded_square_border"
+        android:backgroundTint="@color/white"
+        android:text="Apply Formating"
+        android:textSize="30sp"
+        android:textColor="@color/black"/>
 
 </FrameLayout>

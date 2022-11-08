@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.*
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import org.w3c.dom.Text
 
 
@@ -26,27 +28,13 @@ import org.w3c.dom.Text
 //}
 
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [Formatting.newInstance] factory method to
- * create an instance of this fragment.
- */
 class Formatting : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    //for sending information to firebase database
+    private lateinit var database : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -59,26 +47,56 @@ class Formatting : Fragment() {
         val args = this.arguments
         val inputData = args?.get("data")
         textView.text = inputData.toString()
+
+        val extTemp : NumberPicker = view.findViewById(R.id.numPickerExtTemp)
+        extTemp.minValue = 0
+        extTemp.maxValue = 100
+
+        val bedTemp : NumberPicker = view.findViewById(R.id.numPickerBedTemp)
+        bedTemp.minValue = 0
+        bedTemp.maxValue = 100
+
+        val fanSpeed : NumberPicker = view.findViewById(R.id.numPickerFanSpeed)
+        fanSpeed.minValue = 0
+        fanSpeed.maxValue = 100
+
+        val xVal : NumberPicker = view.findViewById(R.id.numPickerX)
+        xVal.minValue = 0
+        xVal.maxValue = 100
+
+        val yVal : NumberPicker = view.findViewById(R.id.numPickerY)
+        yVal.minValue = 0
+        yVal.maxValue = 100
+
+        val zVal : NumberPicker = view.findViewById(R.id.numPickerZ)
+        zVal.minValue = 0
+        zVal.maxValue = 100
+
+        var formatExtTemp = 0
+        var formatBedTemp = 0
+        var formatFanSpeed = 0
+        var formatXPos = 0
+        var formatYPos = 0
+        var formatZpos = 0
+
+        extTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatExtTemp = numberPicker.value}
+        bedTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatBedTemp = numberPicker.value}
+        fanSpeed.setOnValueChangedListener { numberPicker, i, i2 ->  formatFanSpeed = numberPicker.value}
+        xVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatXPos = numberPicker.value}
+        yVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatYPos = numberPicker.value}
+        zVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatZpos = numberPicker.value}
+
+        val btn : Button = view.findViewById(R.id.buttonApply)
+        btn.setOnClickListener{
+            database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
+            val newFormat = PrinterControls(formatExtTemp, formatBedTemp, formatFanSpeed, formatXPos, formatYPos, formatZpos)
+            database.child("Format").setValue(newFormat).addOnSuccessListener {
+                Toast.makeText(activity, "Successfully Saved", Toast.LENGTH_SHORT).show();
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+            }
+        }
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment Formatting.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            Formatting().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
