@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> replaceFragment(Home())
                 R.id.library -> replaceFragment(Library())
                 R.id.formatting -> replaceFragment(Formatting())
-                R.id.settings -> replaceFragment(Settings())
+//                R.id.settings -> replaceFragment(Settings())
 
                 else -> {
 

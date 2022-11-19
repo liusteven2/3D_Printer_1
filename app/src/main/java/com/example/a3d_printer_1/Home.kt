@@ -1,22 +1,35 @@
 package com.example.a3d_printer_1
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import com.google.firebase.database.*
 
 
 class Home : Fragment() {
+
+    private lateinit var database : DatabaseReference
+
+//    private lateinit var pControlsDelivered : PrinterControls
+
+    private var xPosDeliveredFragTemporary : String? = null
+
+    private var list = mutableListOf<PrinterControls>()
+
+    private var fuck = PrinterControls()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
 //        val btn : Button = view.findViewById(R.id.button)
 //        btn.setOnClickListener{
 //            val editText : EditText = view.findViewById(R.id.ediText)
@@ -27,9 +40,73 @@ class Home : Fragment() {
 //            fragment.arguments = bundle
 //            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
 //        }
-            return view
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
+        val xPosDelivered : TextView = view.findViewById(R.id.xPosDelivered)
+        getUserData()
+//        xPosDeliveredFrag.text = xPosDeliveredFragTemporary
+//        for (position in list) {
+//            xPosDeliveredFrag.text = position.x_pos
+//
+//        }
+//        xPosDelivered.text = fuck.x_pos
+        val btn : Button = view.findViewById(R.id.button2)
+        btn.setOnClickListener{
+            xPosDelivered.setText(fuck.x_pos.toString())
+        }
+        return view
     }
 
+    private fun getUserData() {
+        database = FirebaseDatabase.getInstance().getReference("Printer Contols")
+
+        database.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapshot in snapshot.children){
+                    val pFormat = userSnapshot.key
+                    val etTemp = userSnapshot.child("ext_temp").value.toString()
+                    val bdTemp = userSnapshot.child("bed_temp").value.toString()
+                    val fnSpeed = userSnapshot.child("fan_speed").value.toString()
+                    val xpos = userSnapshot.child("x_pos").value.toString()
+                    val ypos = userSnapshot.child("y_pos").value.toString()
+                    val zpos = userSnapshot.child("z_pos").value.toString()
+                    fuck = PrinterControls(etTemp,bdTemp,fnSpeed,xpos,ypos,zpos)
+//                    list.add(pCtrl)
+
+                }
+//                if (snapshot.exists()){
+////                    for (userSnapshot in snapshot.children){
+////                        val pFormat = userSnapshot.getValue(PrinterControls::class.java)
+//////                        val view = inflater.inflate(R.layout.fragment_home, container, false)
+//////                        val textView : TextView = view.findViewById(R.id.textView)
+//////                        val args = this.arguments
+//////                        val inputData = args?.get("data")
+//////                        textView.text = inputData.toString()
+////                        pControls_delivered.bed_temp = pFormat.bed_temp.toString()
+////
+////                    }
+////                    val pFormatBedTemp = snapshot.child("Format").child("bed_temp").value.toString()
+////                    val pFormatExtTemp = snapshot.child("Format").child("ext_temp").value.toString()
+////                    val pFormatFanSpeed = snapshot.child("Format").child("fan_speed").value.toString()
+////                    val pFormatXPos = snapshot.child("Format").child("x_pos").value.toString()
+////                    val pFormatYPos = snapshot.child("Format").child("y_pos").value.toString()
+////                    val pFormatZPos = snapshot.child("Format").child("z_pos").value.toString()
+//                    val pControlsDelivered = snapshot.child("Format").getValue(PrinterControls::class.java)
+////                    pControlsDelivered(pFormat_bed)
+////                    val pFormatting = PrinterControls(pFormatBedTemp,pFormatExtTemp,pFormatFanSpeed,pFormatXPos,pFormatYPos,pFormatZPos)
+////                    pControlsDelivered = pFormatting
+//                    if (pControlsDelivered != null) {
+//                        xPosDeliveredFragTemporary = pControlsDelivered.x_pos.toString()
+//                    }
+////                    xPosDelivered.text
+//                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
 }
 
 

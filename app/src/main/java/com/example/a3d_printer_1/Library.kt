@@ -1,5 +1,8 @@
 package com.example.a3d_printer_1
 
+import android.content.Intent
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
@@ -9,21 +12,23 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3d_printer_1.databinding.ActivityMainBinding
 import com.example.a3d_printer_1.databinding.FragmentLibraryBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 class Library : Fragment() {
-//
-//    //creating recyclerview and receiving information from firebase
-//    private lateinit var dbref : DatabaseReference
+//creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userArrayList : ArrayList<User>
 
     //for sending information to firebase database
     private lateinit var database : DatabaseReference
+    private lateinit var storage : StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,27 +37,21 @@ class Library : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-////        // Inflate the layout for this fragment
-////        return inflater.inflate(R.layout.fragment_library, container, false)
-//
-//
-//        //for sending information to firebase database
-////        binding = ActivityMainBinding.inflate(LayoutInflater)
-////        binding.submitBtn.seton
-//        val view: View = inflater!!.inflate(R.layout.fragment_library, container, false)
-//        submitBtn.setOnClickListener {
-//
-//        }
-//        binding.submitBtn.onClick {
-//            showToast("hello binding!")
-//        }
-//        return view
         val view = inflater.inflate(R.layout.fragment_library, container, false)
         val btn : Button = view.findViewById(R.id.submitBtn)
+        database = FirebaseDatabase.getInstance().getReference("Users")
+        storage = FirebaseStorage.getInstance().getReference();
+
+//        val getFile = registerForActivityResult(
+//            ActivityResultContracts.GetContent(),
+//            ActivityResultCallback {
+//                UploadFiles(it)
+//            })
+
         btn.setOnClickListener{
+//            selectFiles();
             val editText : EditText = view.findViewById(R.id.submitEdittext)
             val input = editText.text.toString()
-            database = FirebaseDatabase.getInstance().getReference("Users")
             val User = User(input)
             database.child(input).setValue(User).addOnSuccessListener {
                 editText.text.clear()
@@ -64,6 +63,24 @@ class Library : Fragment() {
         return view
     }
 
+//    private fun selectFiles() {
+////        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+//        val intent = Intent()
+//        intent.type = "gcode/*"
+////        intent.setAction(Intent.ACTION_GET_CONTENT)
+////        startActivityForResult(Intent.createChooser(intent,"Select Gcode File..."),1)
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        startActivityForResult(intent, 100)
+//    }
+//
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//
+//        if (requestCode==100 && resultCode==RESULT_OK && data!=null && data.getData()!=null) (
+//                UploadFiles(data.getData())
+//
+//                )
+//    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,4 +118,13 @@ class Library : Fragment() {
 
         })
     }
+
+//    private fun launchPicker(){
+//        val mimeTypes = mutableListOf("gcode/*")
+//        val config = Config(BuildConfig.API_KEY)
+//    }
 }
+
+//class UploadFiles(data: Uri) {
+//
+//}

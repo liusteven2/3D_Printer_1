@@ -10,7 +10,7 @@
     <item android:title="Formatting"
         android:id="@+id/formatting"
         android:icon="@drawable/ic_baseline_print_24"/>
-    <item android:title="Settings"
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_baseline_settings_24"/>
+<!--    <item android:title="Settings"-->
+<!--        android:id="@+id/settings"-->
+<!--        android:icon="@drawable/ic_baseline_settings_24"/>-->
 </menu>

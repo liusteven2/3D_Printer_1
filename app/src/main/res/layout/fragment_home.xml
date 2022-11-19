@@ -138,6 +138,18 @@
         android:layout_marginLeft="240dp"
         android:src="@drawable/online_green_dot" />
 
+    <TextView
+        android:id="@+id/xPosDelivered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="xval"
+        android:layout_marginTop="450dp"
+        android:layout_marginLeft="20dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="17dp"/>
+
+
 </FrameLayout>
 
 <!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
