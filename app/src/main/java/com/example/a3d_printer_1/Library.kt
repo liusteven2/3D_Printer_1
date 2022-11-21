@@ -2,6 +2,7 @@ package com.example.a3d_printer_1
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -15,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,9 +29,15 @@ import com.google.firebase.database.*
 import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class Library : Fragment() {
+
+    private lateinit var uploadTask: UploadTask
 
 //    //Uri for file in device
     private var fileUri: Uri? = null
@@ -50,11 +58,13 @@ class Library : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view2 = inflater.inflate(R.layout.fragment_home, container, false)
+        val xPosDelivered : TextView = view2.findViewById(R.id.xPosDelivered)
         val view = inflater.inflate(R.layout.fragment_library, container, false)
         val btn : Button = view.findViewById(R.id.submitBtn)
         val selectbtn : Button = view.findViewById(R.id.selectBtn)
         database = FirebaseDatabase.getInstance().getReference("Users")
-        storage = FirebaseStorage.getInstance().reference.child("Gcode Files")
+//        storage = FirebaseStorage.getInstance().reference.child("Gcode Files")
 
 //        val getFile = registerForActivityResult(
 //            ActivityResultContracts.GetContent(),
@@ -64,15 +74,20 @@ class Library : Fragment() {
 
         btn.setOnClickListener{
 //            selectFiles();
-            val editText : EditText = view.findViewById(R.id.submitEdittext)
-            val input = editText.text.toString()
-            val User = User(input)
-            database.child(input).setValue(User).addOnSuccessListener {
-                editText.text.clear()
-                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
-            }.addOnFailureListener {
-                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
-            }
+            val bundle = Bundle()
+            bundle.putString("data","working??")
+            val fragment = Home()
+            fragment.arguments  = bundle
+            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+//            val editText : EditText = view.findViewById(R.id.submitEdittext)
+//            val input = editText.text.toString()
+//            val User = User(input)
+//            database.child(input).setValue(User).addOnSuccessListener {
+//                editText.text.clear()
+//                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
+//            }.addOnFailureListener {
+//                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+//            }
         }
 
         val getFile = registerForActivityResult(ActivityResultContracts.GetContent(),
@@ -86,6 +101,30 @@ class Library : Fragment() {
                     setTitle("Enter some Text!")
                     setPositiveButton("OK"){dialog, which ->
                         fileName = editText.text.toString()
+//                        val uploadFileRef: StorageReference = storage.child(fileName+it.getLastPathSegment())
+//                        storage = FirebaseStorage.getInstance().getReference("")
+//                        uploadFileRef.putFile(it).addOnSuccessListener {
+//                            Toast.makeText(activity, "Successfully Uploaded",Toast.LENGTH_SHORT).show();
+//                        }.addOnFailureListener{
+//                            Toast.makeText(activity, "Failed Upload",Toast.LENGTH_SHORT).show();
+//                        }
+                        uploadFile()
+//                        //uploading to firebase
+//                        val fileToUploadName: StorageReference = storage.child(fileName!!)
+//                        fileToUploadName.putFile(fileUri!!).addOnSuccessListener {
+//                            fileToUploadName.downloadUrl.addOnSuccessListener { uri ->
+//                                val databaseReference:DatabaseReference = FirebaseDatabase.getInstance()
+//                                    .getReferenceFromUrl("https://d-printer-b61f0-default-rtdb.firebaseio.com").child("Print Files Database")
+//                                val hashMap: HashMap<String, String> = HashMap()
+//                                hashMap.put(fileName!!, uri.toString())
+//                                databaseReference.setValue(hashMap)
+//                                Toast.makeText(activity, "File Upload Completed", Toast.LENGTH_SHORT).show();
+//                            }.addOnFailureListener{
+//                                Toast.makeText(activity, "File Upload to Database Failed", Toast.LENGTH_SHORT).show();
+//                            }
+//                        }.addOnFailureListener{
+//                            Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show();
+//                        }
                     }
                     setNegativeButton("Cancel"){dialog, which ->
                         Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT).show();
@@ -94,13 +133,36 @@ class Library : Fragment() {
                     show()
                 }
 
+
             })
         selectbtn.setOnClickListener{
 //            val fileInent = Intent(Intent.ACTION_GET_CONTENT)
 //            startActivityForResult(fileInent, 222)
             getFile.launch("application/octet-stream")
+            xPosDelivered.setText("communicated")
         }
         return view
+    }
+
+    private fun uploadFile() {
+        val progressDialog = ProgressDialog(activity)
+        progressDialog.setMessage("Uploading File...")
+        progressDialog.setCancelable(false)
+        progressDialog.show()
+
+        val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
+        val now = Date()
+        val fileNameNow = formatter.format(now)
+        storage = FirebaseStorage.getInstance().getReference(fileName+"$fileNameNow")
+        uploadTask = storage.putFile(fileUri!!)
+
+        uploadTask.addOnFailureListener {
+            Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
+            if (progressDialog.isShowing) progressDialog.dismiss()
+        }.addOnSuccessListener{
+            Toast.makeText(activity, "File Upload to Storage Success", Toast.LENGTH_SHORT).show()
+            if (progressDialog.isShowing) progressDialog.dismiss()
+        }
     }
 
 //    private fun selectFiles() {

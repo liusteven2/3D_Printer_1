@@ -42,6 +42,9 @@ class Home : Fragment() {
 //        }
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val xPosDelivered : TextView = view.findViewById(R.id.xPosDelivered)
+        val args = this.arguments
+        val inputData = args?.get("data")
+        xPosDelivered.text = inputData.toString()
         getUserData()
 //        xPosDeliveredFrag.text = xPosDeliveredFragTemporary
 //        for (position in list) {
