@@ -1,7 +1,11 @@
 package com.example.a3d_printer_1
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
@@ -12,17 +16,26 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3d_printer_1.databinding.ActivityMainBinding
 import com.example.a3d_printer_1.databinding.FragmentLibraryBinding
 import com.google.firebase.database.*
+import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.IOException
 
 class Library : Fragment() {
-//creating recyclerview and receiving information from firebase
+
+//    //Uri for file in device
+    private var fileUri: Uri? = null
+    private var fileName: String? = null
+
+    //creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
     private lateinit var userArrayList : ArrayList<User>
 
@@ -39,8 +52,9 @@ class Library : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
         val btn : Button = view.findViewById(R.id.submitBtn)
+        val selectbtn : Button = view.findViewById(R.id.selectBtn)
         database = FirebaseDatabase.getInstance().getReference("Users")
-        storage = FirebaseStorage.getInstance().getReference();
+        storage = FirebaseStorage.getInstance().reference.child("Gcode Files")
 
 //        val getFile = registerForActivityResult(
 //            ActivityResultContracts.GetContent(),
@@ -60,6 +74,32 @@ class Library : Fragment() {
                 Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
             }
         }
+
+        val getFile = registerForActivityResult(ActivityResultContracts.GetContent(),
+            ActivityResultCallback {
+                fileUri = it!!
+                val builder = AlertDialog.Builder(requireActivity())
+                val editText_view = inflater.inflate(R.layout.edit_text_layout, container, false)
+                val editText: EditText = editText_view.findViewById(R.id.et_editText)
+
+                with(builder) {
+                    setTitle("Enter some Text!")
+                    setPositiveButton("OK"){dialog, which ->
+                        fileName = editText.text.toString()
+                    }
+                    setNegativeButton("Cancel"){dialog, which ->
+                        Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT).show();
+                    }
+                    setView(editText_view)
+                    show()
+                }
+
+            })
+        selectbtn.setOnClickListener{
+//            val fileInent = Intent(Intent.ACTION_GET_CONTENT)
+//            startActivityForResult(fileInent, 222)
+            getFile.launch("application/octet-stream")
+        }
         return view
     }
 
@@ -67,19 +107,22 @@ class Library : Fragment() {
 ////        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
 //        val intent = Intent()
 //        intent.type = "gcode/*"
-////        intent.setAction(Intent.ACTION_GET_CONTENT)
-////        startActivityForResult(Intent.createChooser(intent,"Select Gcode File..."),1)
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        startActivityForResult(intent, 100)
+//        intent.setAction(Intent.ACTION_GET_CONTENT)
+//        startActivityForResult(Intent.createChooser(intent,"Select Gcode File..."),1)
+////        intent.action = Intent.ACTION_GET_CONTENT
+////        startActivityForResult(intent, 100)
 //    }
-//
+
 //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 //        super.onActivityResult(requestCode, resultCode, data)
 //
-//        if (requestCode==100 && resultCode==RESULT_OK && data!=null && data.getData()!=null) (
-//                UploadFiles(data.getData())
-//
-//                )
+//        if (requestCode==222 && resultCode== Activity.RESULT_OK && data!=null && data.getData()!=null) (
+//                try {
+//                    val fileUri: Uri = data?.data!!
+//                }catch (e: IOException) {
+//                    e.printStackTrace()
+//                    Toast.makeText(activity, "Failed to pull file", Toast.LENGTH_SHORT).show()
+//                })
 //    }
 
 
