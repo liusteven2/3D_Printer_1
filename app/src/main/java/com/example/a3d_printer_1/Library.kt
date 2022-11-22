@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.ParcelFileDescriptor
 import android.provider.ContactsContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,15 +26,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a3d_printer_1.databinding.ActivityMainBinding
 import com.example.a3d_printer_1.databinding.FragmentLibraryBinding
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.database.*
 import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import kotlinx.coroutines.tasks.await
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
+import java.text.DecimalFormat
+import kotlin.collections.HashMap
+import kotlin.math.log10
+import kotlin.math.pow
+
 
 class Library : Fragment() {
 
@@ -42,10 +50,12 @@ class Library : Fragment() {
 //    //Uri for file in device
     private var fileUri: Uri? = null
     private var fileName: String? = null
+    private var fileUrl: String? = null
+    private var gcodeFile: gcodeFileClass? = null
 
     //creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
-    private lateinit var userArrayList : ArrayList<User>
+    private lateinit var userArrayList : ArrayList<gcodeFileClass>
 
     //for sending information to firebase database
     private lateinit var database : DatabaseReference
@@ -63,7 +73,8 @@ class Library : Fragment() {
         val view = inflater.inflate(R.layout.fragment_library, container, false)
         val btn : Button = view.findViewById(R.id.submitBtn)
         val selectbtn : Button = view.findViewById(R.id.selectBtn)
-        database = FirebaseDatabase.getInstance().getReference("Users")
+//        database = FirebaseDatabase.getInstance().getReference("Users")
+        database = FirebaseDatabase.getInstance().getReference("Print Files")
 //        storage = FirebaseStorage.getInstance().reference.child("Gcode Files")
 
 //        val getFile = registerForActivityResult(
@@ -153,15 +164,36 @@ class Library : Fragment() {
         val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
         val now = Date()
         val fileNameNow = formatter.format(now)
-        storage = FirebaseStorage.getInstance().getReference(fileName+"$fileNameNow")
+        storage = FirebaseStorage.getInstance().getReference("Print Files/"+fileName)
         uploadTask = storage.putFile(fileUri!!)
+//        val fileUrl = uploadTask.result.toString()
+        var pfd = requireActivity().contentResolver.openFileDescriptor(fileUri!!, "r")
+        var fileLength: Long? = pfd!!.getStatSize()
+        var fileLengthReadable = fileLength?.readableFormat()
+
+
+
+        Toast.makeText(activity, fileLengthReadable, Toast.LENGTH_LONG).show()
 
         uploadTask.addOnFailureListener {
             Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
             if (progressDialog.isShowing) progressDialog.dismiss()
         }.addOnSuccessListener{
             Toast.makeText(activity, "File Upload to Storage Success", Toast.LENGTH_SHORT).show()
+
+            storage.downloadUrl.addOnSuccessListener {
+                fileUrl = it.toString()
+                Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
+            }
+
+            val gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
+
             if (progressDialog.isShowing) progressDialog.dismiss()
+                database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+                    Toast.makeText(activity, "Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                }.addOnFailureListener {
+                    Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
@@ -198,20 +230,20 @@ class Library : Fragment() {
         userRecyclerView.layoutManager = layoutManager
         userRecyclerView.setHasFixedSize(true)
 
-        userArrayList = arrayListOf<User>()
+        userArrayList = arrayListOf<gcodeFileClass>()
         getUserData()
     }
 
 
     private fun getUserData() {
-        database = FirebaseDatabase.getInstance().getReference("Users")
+        database = FirebaseDatabase.getInstance().getReference("Print Files")
 
         database.addValueEventListener(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.exists()){
                     for (userSnapshot in snapshot.children){
-                        val user = userSnapshot.getValue(User::class.java)
-                        userArrayList.add(user!!) //note double exclamation points will throw an exception on null value
+                        val gcodefile = userSnapshot.getValue(gcodeFileClass::class.java)
+                        userArrayList.add(gcodefile!!) //note double exclamation points will throw an exception on null value
                     }
                     userRecyclerView.adapter = MyAdapter(userArrayList)
                 }
@@ -222,6 +254,13 @@ class Library : Fragment() {
             }
 
         })
+    }
+
+    fun Long.readableFormat(): String {
+        if (this <= 0 ) return "0"
+        val units = arrayOf("B", "kB", "MB", "GB", "TB")
+        val digitGroups = (log10(this.toDouble()) / log10(1024.00)).toInt()
+        return "~"+DecimalFormat("#,##0.#").format(this / 1024.00.pow(digitGroups.toDouble())).toString() + " " + units[digitGroups]
     }
 
 //    private fun launchPicker(){
