@@ -2,6 +2,7 @@ package com.example.a3d_printer_1
 
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -41,10 +42,13 @@ class Home : Fragment() {
 //            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
 //        }
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val xPosDelivered : TextView = view.findViewById(R.id.xPosDelivered)
+//        val xPosDelivered : TextView = view.findViewById(R.id.xPosDelivered)
+        val nameOfFile : TextView = view.findViewById(R.id.nameOfFileToBePrinted)
         val args = this.arguments
-        val inputData = args?.get("data")
-        xPosDelivered.text = inputData.toString()
+//        val inputData = args?.get("data")
+        val name = args?.get("fileName")
+//        xPosDelivered.text = inputData.toString()
+        nameOfFile.text = name.toString()
         getUserData()
 //        xPosDeliveredFrag.text = xPosDeliveredFragTemporary
 //        for (position in list) {
@@ -54,7 +58,29 @@ class Home : Fragment() {
 //        xPosDelivered.text = fuck.x_pos
         val btn : Button = view.findViewById(R.id.button2)
         btn.setOnClickListener{
-            xPosDelivered.setText(fuck.x_pos.toString())
+//            xPosDelivered.setText(fuck.x_pos.toString())->
+            val fileUrl = args?.get("url").toString()
+            database = FirebaseDatabase.getInstance().getReference("Start Print")
+            val commencePrint = BeginPrint("true",fileUrl)
+            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+                Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+            }
+            btn.text = "Printing! Hold to cancel print."
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+        }
+        btn.setOnLongClickListener{
+            database = FirebaseDatabase.getInstance().getReference("Start Print")
+            val commencePrint = BeginPrint("false",null)
+            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+                Toast.makeText(activity, "Cancel Print!", Toast.LENGTH_LONG).show();
+            }.addOnFailureListener {
+                Toast.makeText(activity, "Failed to Cancel Print", Toast.LENGTH_SHORT).show();
+            }
+            btn.text = "Start Print"
+            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+            true
         }
         return view
     }

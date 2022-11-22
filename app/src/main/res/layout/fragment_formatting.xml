@@ -115,37 +115,39 @@
         android:textSize="20dp"
         android:textColor="@color/white" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="230dp"
-        android:layout_marginLeft="100dp"
-        android:background="@color/white"
-        android:theme="@style/AppTheme.Picker">
-
-
-        <NumberPicker
-            android:id="@+id/numPickerFanSpeed"
-            android:orientation="horizontal"
-            android:layout_width="30dp"
-            android:layout_height="100dp"
-            android:theme="@style/AppTheme.Picker">
-
-
-        </NumberPicker>
-
-    </LinearLayout>
-
-<!--    <EditText-->
-<!--        android:id="@+id/numPickerFanSpeed"-->
-<!--        android:hint="Speed 20-100"-->
-<!--        android:layout_width="110dp"-->
-<!--        android:layout_height="45dp"-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
 <!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="230dp"-->
 <!--        android:layout_marginLeft="100dp"-->
-<!--        android:layout_marginTop="255dp"-->
-<!--        android:background="@color/white"></EditText>-->
+<!--        android:background="@color/white"-->
+<!--        android:theme="@style/AppTheme.Picker">-->
+
+
+<!--        <NumberPicker-->
+<!--            android:id="@+id/numPickerFanSpeed"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:theme="@style/AppTheme.Picker">-->
+
+
+<!--        </NumberPicker>-->
+
+<!--    </LinearLayout>-->
+
+    <EditText
+        android:id="@+id/numPickerFanSpeed"
+        android:inputType="number"
+        android:hint="Speed 20-100"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="262dp"
+        android:textSize="18dp"
+        android:background="@color/white"></EditText>
 
 
 <!--    visual text and numPicker for Extruder Position-->

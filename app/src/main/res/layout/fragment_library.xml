@@ -15,40 +15,51 @@
 <!--        android:layout_marginTop="20dp"-->
 <!--        android:layout_gravity="center_horizontal"/>-->
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select File to Print Below"
+        android:textColor="@color/white"
+        android:layout_marginTop="70dp"
+        android:layout_marginLeft="55dp"
+        android:textStyle="italic"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="320dp"
-        android:layout_height="489dp"
+        android:layout_height="415dp"
         android:layout_gravity="center"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/slightly_rounded_square_border"
         tools:listitem="@layout/user_item" />
 
-    <EditText
-        android:id="@+id/submitEdittext"
-        android:layout_width="330dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:background="@color/white"
-        android:hint="First Name"
-        android:paddingLeft="20dp" />
+<!--    <EditText-->
+<!--        android:id="@+id/submitEdittext"-->
+<!--        android:layout_width="330dp"-->
+<!--        android:layout_height="45dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:hint="First Name"-->
+<!--        android:paddingLeft="20dp" />-->
 
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_marginTop="75dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+<!--    <Button-->
+<!--        android:id="@+id/submitBtn"-->
+<!--        android:layout_marginTop="75dp"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Submit"/>-->
 
     <Button
         android:id="@+id/selectBtn"
-        android:layout_marginTop="125dp"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select File" />
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:textSize="20dp"
+        android:text="Select New File to Upload" />
 
 </FrameLayout>
 

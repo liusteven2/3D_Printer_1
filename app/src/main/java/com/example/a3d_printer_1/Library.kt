@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.a3d_printer_1.databinding.ActivityMainBinding
 import com.example.a3d_printer_1.databinding.FragmentLibraryBinding
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.database.*
 import com.google.firebase.storage.BuildConfig
 import com.google.firebase.storage.FirebaseStorage
@@ -68,10 +69,10 @@ class Library : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view2 = inflater.inflate(R.layout.fragment_home, container, false)
-        val xPosDelivered : TextView = view2.findViewById(R.id.xPosDelivered)
+//        val view2 = inflater.inflate(R.layout.fragment_home, container, false)
+//        val xPosDelivered : TextView = view2.findViewById(R.id.xPosDelivered)
         val view = inflater.inflate(R.layout.fragment_library, container, false)
-        val btn : Button = view.findViewById(R.id.submitBtn)
+//        val btn : Button = view.findViewById(R.id.submitBtn)
         val selectbtn : Button = view.findViewById(R.id.selectBtn)
 //        database = FirebaseDatabase.getInstance().getReference("Users")
         database = FirebaseDatabase.getInstance().getReference("Print Files")
@@ -83,23 +84,23 @@ class Library : Fragment() {
 //                UploadFiles(it)
 //            })
 
-        btn.setOnClickListener{
-//            selectFiles();
-            val bundle = Bundle()
-            bundle.putString("data","working??")
-            val fragment = Home()
-            fragment.arguments  = bundle
-            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
-//            val editText : EditText = view.findViewById(R.id.submitEdittext)
-//            val input = editText.text.toString()
-//            val User = User(input)
-//            database.child(input).setValue(User).addOnSuccessListener {
-//                editText.text.clear()
-//                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
-//            }.addOnFailureListener {
-//                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
-//            }
-        }
+//        btn.setOnClickListener{
+////            selectFiles();
+//            val bundle = Bundle()
+//            bundle.putString("data","working??")
+//            val fragment = Home()
+//            fragment.arguments  = bundle
+//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+////            val editText : EditText = view.findViewById(R.id.submitEdittext)
+////            val input = editText.text.toString()
+////            val User = User(input)
+////            database.child(input).setValue(User).addOnSuccessListener {
+////                editText.text.clear()
+////                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
+////            }.addOnFailureListener {
+////                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+////            }
+//        }
 
         val getFile = registerForActivityResult(ActivityResultContracts.GetContent(),
             ActivityResultCallback {
@@ -150,8 +151,9 @@ class Library : Fragment() {
 //            val fileInent = Intent(Intent.ACTION_GET_CONTENT)
 //            startActivityForResult(fileInent, 222)
             getFile.launch("application/octet-stream")
-            xPosDelivered.setText("communicated")
+//            xPosDelivered.setText("communicated")
         }
+//        MyAdapter.onItemClick
         return view
     }
 
@@ -245,7 +247,21 @@ class Library : Fragment() {
                         val gcodefile = userSnapshot.getValue(gcodeFileClass::class.java)
                         userArrayList.add(gcodefile!!) //note double exclamation points will throw an exception on null value
                     }
-                    userRecyclerView.adapter = MyAdapter(userArrayList)
+//                    userRecyclerView.adapter = MyAdapter(userArrayList)
+                    var adapter = MyAdapter(userArrayList)
+                    userRecyclerView.adapter = adapter
+                    adapter.setOnClickListener(object : MyAdapter.onItemClickListener{
+                        override fun onItemClick(position: Int) {
+                            Toast.makeText(activity, "Clicked on File: " + userArrayList[position].name, Toast.LENGTH_SHORT).show();
+                            val bundle = Bundle()
+                            bundle.putString("fileName",userArrayList[position].name)
+                            bundle.putString("url",userArrayList[position].url)
+                            val fragment = Home()
+                            fragment.arguments  = bundle
+                            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
+                        }
+
+                    })
                 }
             }
 
@@ -254,6 +270,7 @@ class Library : Fragment() {
             }
 
         })
+
     }
 
     fun Long.readableFormat(): String {
