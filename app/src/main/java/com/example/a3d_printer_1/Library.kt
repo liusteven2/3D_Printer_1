@@ -188,11 +188,22 @@ class Library : Fragment() {
                 Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
             }
 
-            val gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
+            var gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
 
+            val hasUrl: Boolean = true
             if (progressDialog.isShowing) progressDialog.dismiss()
                 database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-                    Toast.makeText(activity, "Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                if (gcodeFile.url != fileUrl) {
+                    gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
+                    database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+                        Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                    }.addOnFailureListener{
+                        Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(activity, "Successfully Saved to Database", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                }
                 }.addOnFailureListener {
                     Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
                 }

@@ -21,6 +21,7 @@ class Home : Fragment() {
 //    private lateinit var pControlsDelivered : PrinterControls
 
     private var xPosDeliveredFragTemporary : String? = null
+    private var bedTemp : String? = null
 
     private var list = mutableListOf<PrinterControls>()
 
@@ -50,6 +51,8 @@ class Home : Fragment() {
 //        xPosDelivered.text = inputData.toString()
         nameOfFile.text = name.toString()
         getUserData()
+        val bedTempDisplay : TextView = view.findViewById(R.id.bedTempDisplay)
+        bedTempDisplay.text = bedTemp
 //        xPosDeliveredFrag.text = xPosDeliveredFragTemporary
 //        for (position in list) {
 //            xPosDeliveredFrag.text = position.x_pos
@@ -86,20 +89,23 @@ class Home : Fragment() {
     }
 
     private fun getUserData() {
-        database = FirebaseDatabase.getInstance().getReference("Printer Contols")
+        database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
 
         database.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (userSnapshot in snapshot.children){
                     val pFormat = userSnapshot.key
-                    val etTemp = userSnapshot.child("ext_temp").value.toString()
+//                    val etTemp = userSnapshot.child("ext_temp").value.toString()
+                    bedTemp = userSnapshot.child("ext_temp").value.toString()
                     val bdTemp = userSnapshot.child("bed_temp").value.toString()
                     val fnSpeed = userSnapshot.child("fan_speed").value.toString()
                     val xpos = userSnapshot.child("x_pos").value.toString()
                     val ypos = userSnapshot.child("y_pos").value.toString()
                     val zpos = userSnapshot.child("z_pos").value.toString()
-                    fuck = PrinterControls(etTemp,bdTemp,fnSpeed,xpos,ypos,zpos)
+                    fuck = PrinterControls(bedTemp,bdTemp,fnSpeed,xpos,ypos,zpos)
 //                    list.add(pCtrl)
+                    Toast.makeText(activity, "FOUND EXT POSITION: $xpos:$ypos:$zpos", Toast.LENGTH_SHORT).show();
+
 
                 }
 //                if (snapshot.exists()){
