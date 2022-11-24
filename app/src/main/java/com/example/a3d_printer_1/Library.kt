@@ -206,7 +206,15 @@ class Library : Fragment() {
                         if (gcodeFile?.url == fileUrl)
                             Toast.makeText(activity,"Successfully Saved to Database 2ND TRY DUMBASS",Toast.LENGTH_SHORT).show();
                         else
-                            Toast.makeText(activity,"Hmm.. We've encountered an error. Please try uploading again.",Toast.LENGTH_LONG).show();
+                            gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
+                            database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+                                if (gcodeFile?.url == fileUrl)
+                                    Toast.makeText(activity,"Successfully Saved to Database 3RD TRY HOLY FUCKKK U SUCK",Toast.LENGTH_SHORT).show();
+                                else
+                                    Toast.makeText(activity,"Hmm.. We've encountered an error. Please try uploading again.",Toast.LENGTH_LONG).show();
+                            }.addOnFailureListener{
+                                Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                            }
                     }.addOnFailureListener{
                         Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
                     }
