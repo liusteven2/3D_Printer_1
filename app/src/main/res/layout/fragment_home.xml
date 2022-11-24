@@ -55,7 +55,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bed Temperature:                    0\u00B0"
+        android:text="Bed Temperature:                    "
         android:layout_marginTop="320dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -67,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="#"
-        android:layout_marginTop="280dp"
+        android:layout_marginTop="320dp"
         android:layout_marginLeft="290dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
@@ -77,7 +77,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Extruder Temperature:            0\u00B0"
+        android:text="Extruder Temperature:          "
         android:layout_marginTop="338dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -85,11 +85,13 @@
         android:textSize="17dp"/>
 
     <TextView
+        android:id="@+id/extTempDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Extruder Position:                    0.0.0"
-        android:layout_marginTop="356dp"
-        android:layout_marginLeft="60dp"
+        android:text="#"
+        android:layout_marginTop="338dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -97,12 +99,46 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fan Speed:                                         0"
+        android:text="Extruder Position:                "
+        android:layout_marginTop="356dp"
+        android:layout_marginLeft="60dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="17dp"/>
+
+    <TextView
+        android:id="@+id/extPosDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#"
+        android:layout_marginTop="356dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="17dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fan Speed:                    "
         android:layout_marginTop="374dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/fanSpeedDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="#"
+        android:layout_marginTop="374dp"
+        android:layout_marginLeft="290dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="17dp"/>
 
     <TextView
         android:layout_width="wrap_content"

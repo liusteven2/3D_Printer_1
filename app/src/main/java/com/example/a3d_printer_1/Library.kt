@@ -53,6 +53,8 @@ class Library : Fragment() {
     private var fileName: String? = null
     private var fileUrl: String? = null
     private var gcodeFile: gcodeFileClass? = null
+    private var fileLengthReadable: String? = null
+    private var fileNameNow: String? = null
 
     //creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
@@ -165,13 +167,13 @@ class Library : Fragment() {
 
         val formatter = SimpleDateFormat("yyyy_MM_dd_HH_mm_ss", Locale.getDefault())
         val now = Date()
-        val fileNameNow = formatter.format(now)
+        fileNameNow = formatter.format(now)
         storage = FirebaseStorage.getInstance().getReference("Print Files/"+fileName)
         uploadTask = storage.putFile(fileUri!!)
 //        val fileUrl = uploadTask.result.toString()
         var pfd = requireActivity().contentResolver.openFileDescriptor(fileUri!!, "r")
         var fileLength: Long? = pfd!!.getStatSize()
-        var fileLengthReadable = fileLength?.readableFormat()
+        fileLengthReadable = fileLength?.readableFormat()
 
 
 
@@ -188,22 +190,43 @@ class Library : Fragment() {
                 Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
             }
 
-            var gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
+            gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
 
-            val hasUrl: Boolean = true
+            val counter: Int? = 0
             if (progressDialog.isShowing) progressDialog.dismiss()
                 database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-                if (gcodeFile.url != fileUrl) {
+//    ======================================================================================================================================
+
+
+
+//
+                if (gcodeFile?.url != fileUrl) {
                     gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
                     database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-                        Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                        if (gcodeFile?.url == fileUrl)
+                            Toast.makeText(activity,"Successfully Saved to Database 2ND TRY DUMBASS",Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(activity,"Hmm.. We've encountered an error. Please try uploading again.",Toast.LENGTH_LONG).show();
                     }.addOnFailureListener{
                         Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
                     }
-                    Toast.makeText(activity, "Successfully Saved to Database", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity,"Successfully Saved to Database 1ST TRY DAMN U KINDA GOOD",Toast.LENGTH_SHORT).show();
                 }
+//    ===============================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================================================
+//                while((gcodeFile?.url != fileUrl) && (counter != 5))  {
+//                    Toast.makeText(activity,"Made it to while loop"+counter,Toast.LENGTH_SHORT).show();
+//                    gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
+//                    database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+//                        if (gcodeFile?.url == fileUrl)
+//                        Toast.makeText(activity,"Successfully Saved to Database"+gcodeFile?.url,Toast.LENGTH_SHORT).show();
+//                    }.addOnFailureListener{
+//                        if (gcodeFile?.url == fileUrl)
+//                        Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+
+//    ======================================================================================================================================
                 }.addOnFailureListener {
                     Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
                 }
@@ -286,9 +309,9 @@ class Library : Fragment() {
 
     fun Long.readableFormat(): String {
         if (this <= 0 ) return "0"
-        val units = arrayOf("B", "kB", "MB", "GB", "TB")
+        val units = arrayOf("iB", "kiB", "MiB", "GiB", "TiB")
         val digitGroups = (log10(this.toDouble()) / log10(1024.00)).toInt()
-        return "~"+DecimalFormat("#,##0.#").format(this / 1024.00.pow(digitGroups.toDouble())).toString() + " " + units[digitGroups]
+        return DecimalFormat("#,##0.#").format(this / 1024.00.pow(digitGroups.toDouble())).toString() + " " + units[digitGroups]
     }
 
 //    private fun launchPicker(){

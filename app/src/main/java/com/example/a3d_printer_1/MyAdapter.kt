@@ -49,8 +49,8 @@ class MyAdapter(private val gcodeFileList : ArrayList<gcodeFileClass>) : Recycle
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val currentitem = gcodeFileList[position]
         holder.fileName.text = currentitem.name
-        holder.fileDate.text = currentitem.date
-        holder.fileSize.text = currentitem.size
+        holder.fileDate.text = "Timestamp: " + currentitem.date
+        holder.fileSize.text = "File Size: " + currentitem.size
 
 //        holder.itemView.setOnClickListener{
 //            onItemClick?
