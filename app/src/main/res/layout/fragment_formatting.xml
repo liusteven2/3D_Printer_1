@@ -105,7 +105,6 @@
         android:background="@color/white"></EditText>
     <!--    visual text and numPicker for Fan Speed Position-->
     <TextView
-        android:id="@+id/textView_FanSpeed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -115,27 +114,38 @@
         android:textSize="20dp"
         android:textColor="@color/white" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="230dp"
-        android:layout_marginLeft="100dp"
-        android:background="@color/white"
-        android:theme="@style/AppTheme.Picker">
+<!--    NUMBER PICKER FOR FAN SPEED DIALOG-->
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="230dp"-->
+<!--        android:layout_marginLeft="100dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:theme="@style/AppTheme.Picker">-->
 
 
-        <NumberPicker
-            android:id="@+id/numPickerFanSpeed"
-            android:orientation="horizontal"
-            android:layout_width="30dp"
-            android:layout_height="100dp"
-            android:theme="@style/AppTheme.Picker">
+<!--        <NumberPicker-->
+<!--            android:id="@+id/numPickerFanSpeed"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="100dp"-->
+<!--            android:theme="@style/AppTheme.Picker">-->
 
 
-        </NumberPicker>
+<!--        </NumberPicker>-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
+
+    <Button
+        android:id="@+id/textView_FanSpeed"
+        android:text="HIGH"
+        android:layout_marginTop="255dp"
+        android:layout_marginLeft="220dp"
+        android:layout_width="120dp"
+        android:layout_height="40dp">
+
+    </Button>
 
 <!--    <EditText-->
 <!--        android:id="@+id/numPickerFanSpeed"-->
@@ -149,18 +159,68 @@
 <!--        android:textSize="18dp"-->
 <!--        android:background="@color/white"></EditText>-->
 
+    <!--    visual text and numPicker for Extruder Position-->
+<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="100dp"-->
+<!--        android:layout_marginTop="262dp">-->
+<!--        &lt;!&ndash;            android:layout_gravity="center_horizontal"&ndash;&gt;-->
 
-<!--    visual text and numPicker for Extruder Position-->
-    <TextView
-        android:id="@+id/textView_ExtPos"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="365dp"
-        android:layout_marginRight="85dp"
-        android:text="Edit Extruder Pos"
-        android:textSize="20dp"
-        android:textColor="@color/white" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnOff"-->
+<!--            android:text="btn1"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:textSize="18dp" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnLow"-->
+<!--            android:text="btn1"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:textSize="18dp" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnHigh"-->
+<!--            android:text="btn1"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:textSize="18dp" />-->
+
+
+<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
+
+<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnOff"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="OFF" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnLow"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="LOW" />-->
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btnHigh"-->
+<!--            style="?attr/materialButtonOutlinedStyle"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="HIGH"/>-->
+
+
+<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
 
 <!--    <LinearLayout-->
 <!--        android:layout_width="wrap_content"-->
@@ -245,6 +305,17 @@
         android:text="Apply Formating"
         android:textSize="30sp"
         android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/textView_ExtPos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="365dp"
+        android:layout_marginRight="85dp"
+        android:text="Edit Extruder Pos"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 
 
 </FrameLayout>

@@ -5,15 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/et_editText"
+    <TextView
+        android:id="@+id/et_textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter a name for the File"
+        android:text="Do not continue if you are missing gcode files on your device."
         android:textSize="16sp"
         android:layout_marginHorizontal="20dp"
-        android:maxLength="23"
-        tools:ignore="MissingConstraints" />
-
+        tools:ignore="MissingConstraints"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -108,11 +108,21 @@ class Formatting : Fragment() {
 //        bedTemp.minValue = 0
 //        bedTemp.maxValue = 100
 
-        val fanSpeed : NumberPicker = view.findViewById(R.id.numPickerFanSpeed)
-        fanSpeed.minValue = 0
-        fanSpeed.maxValue = 100
-//        val fanSpeed : EditText = view.findViewById(R.id.numPickerFanSpeed)
-//        fanSpeed.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
+//        val fanSpeed : NumberPicker = view.findViewById(R.id.numPickerFanSpeed)
+//        fanSpeed.minValue = 0
+//        fanSpeed.maxValue = 100
+////        val fanSpeed : EditText = view.findViewById(R.id.numPickerFanSpeed)
+////        fanSpeed.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
+//        val fanSpeed : Button = view.findViewById(R.id.textView_FanSpeed)
+//        fanSpeed.setOnClickListener{
+//            if (fanSpeed.text.toString() == "HIGH") {
+//                fanSpeed.setText("LOW")
+//            } else if (fanSpeed.text.toString() == "LOW") {
+//                fanSpeed.setText("OFF")
+//            } else {
+//                fanSpeed.setText("HIGH")
+//            }
+//        }
 
         val xVal : EditText = view.findViewById(R.id.numPickerX)
         xVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,300))
@@ -138,15 +148,26 @@ class Formatting : Fragment() {
 
 //        extTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatExtTemp = numberPicker.value.toString()}
 //        bedTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatBedTemp = numberPicker.value.toString()}
-        fanSpeed.setOnValueChangedListener { numberPicker, i, i2 ->  formatFanSpeed = numberPicker.value.toString()}
+//        fanSpeed.setOnValueChangedListener { numberPicker, i, i2 ->  formatFanSpeed = numberPicker.value.toString()}
 //        xVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatXPos = numberPicker.value.toString()}
 //        yVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatYPos = numberPicker.value.toString()}
 //        zVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatZpos = numberPicker.value.toString()}
 
+        val fanSpeed : Button = view.findViewById(R.id.textView_FanSpeed)
+        fanSpeed.setOnClickListener {
+            if (fanSpeed.text.toString() == "HIGH")
+                fanSpeed.text = "LOW"
+            else if (fanSpeed.text.toString() == "LOW")
+                fanSpeed.text = "OFF"
+            else
+                fanSpeed.text = "HIGH"
+        }
+
         val btn : Button = view.findViewById(R.id.buttonApply)
         btn.setOnClickListener{
             database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
-            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), formatFanSpeed, xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
+//            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
+            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), "HIGH", xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
             database.child("Format").setValue(newFormat).addOnSuccessListener {
                 Toast.makeText(activity, "Successfully Saved" + extTemp.text.toString(), Toast.LENGTH_SHORT).show();
             }.addOnFailureListener {

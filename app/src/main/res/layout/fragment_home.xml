@@ -55,7 +55,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bed Temperature:                    "
+        android:text="Bed Temperature:"
         android:layout_marginTop="320dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="320dp"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="275dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -77,7 +77,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Extruder Temperature:          "
+        android:text="Extruder Temperature:"
         android:layout_marginTop="338dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="338dp"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="275dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -99,7 +99,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Extruder Position:                "
+        android:text="Extruder Position:"
         android:layout_marginTop="356dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -112,7 +112,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="356dp"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="275dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -121,7 +121,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fan Speed:                    "
+        android:text="Fan Speed:"
         android:layout_marginTop="374dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
@@ -134,7 +134,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="374dp"
-        android:layout_marginLeft="290dp"
+        android:layout_marginLeft="275dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -143,12 +143,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Last Updated: 0s"
+        android:text="Last Updated:"
         android:layout_marginTop="400dp"
         android:layout_marginLeft="60dp"
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>
+
+    <Chronometer
+        android:id="@+id/simpleChronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:layout_marginLeft="140dp"
+        android:textColor="@color/white"
+        android:textStyle="italic"
+        android:textSize="12dp"/>
+
 
     <TextView
         android:layout_width="wrap_content"

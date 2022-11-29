@@ -8,10 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
@@ -35,6 +32,7 @@ class Home : Fragment() {
     private var extTempDisplay :TextView? = null
     private var extPosDisplay :TextView? = null
     private var fanSpeedDisplay :TextView? = null
+    private var simpleChronometer : Chronometer? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,12 +56,12 @@ class Home : Fragment() {
 //        val inputData = args?.get("data")
         val name = args?.get("fileName")
 //        xPosDelivered.text = inputData.toString()
-        nameOfFile.text = name.toString()
         getUserData()
         bedTempDisplay = view.findViewById(R.id.bedTempDisplay)
         extTempDisplay = view.findViewById(R.id.extTempDisplay)
         extPosDisplay = view.findViewById(R.id.extPosDisplay)
         fanSpeedDisplay = view.findViewById(R.id.fanSpeedDisplay)
+        simpleChronometer = view.findViewById(R.id.simpleChronometer)
 
 //        xPosDeliveredFrag.text = xPosDeliveredFragTemporary
 //        for (position in list) {
@@ -72,45 +70,84 @@ class Home : Fragment() {
 //        }
 //        xPosDelivered.text = fuck.x_pos
         val btn : Button = view.findViewById(R.id.button2)
-        btn.setOnClickListener{
+        if ((args?.get("url").toString() != "null") && (args?.get("fileName").toString() != "null")){
+            nameOfFile.text = name.toString()
+            btn.setOnClickListener{
 //            xPosDelivered.setText(fuck.x_pos.toString())->
-            val fileUrl = args?.get("url").toString()
-            database = FirebaseDatabase.getInstance().getReference("Start Print")
-            val commencePrint = BeginPrint("true",fileUrl)
-            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
-                Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
-            }.addOnFailureListener {
-                Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+                val fileUrl = args?.get("url").toString()
+                database = FirebaseDatabase.getInstance().getReference("Start Print")
+                val commencePrint = BeginPrint("true",fileUrl)
+                database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+                    Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
+                }.addOnFailureListener {
+                    Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+                }
+                btn.text = "Printing! Hold to cancel print."
+                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
             }
-            btn.text = "Printing! Hold to cancel print."
-            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
-        }
-        btn.setOnLongClickListener{
-            database = FirebaseDatabase.getInstance().getReference("Start Print")
-            val commencePrint = BeginPrint("false",null)
-            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
-                Toast.makeText(activity, "Cancel Print!", Toast.LENGTH_LONG).show();
-            }.addOnFailureListener {
-                Toast.makeText(activity, "Failed to Cancel Print", Toast.LENGTH_SHORT).show();
+            btn.setOnLongClickListener{
+                database = FirebaseDatabase.getInstance().getReference("Start Print")
+                val commencePrint = BeginPrint("false",null)
+                database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+                    Toast.makeText(activity, "Cancel Print!", Toast.LENGTH_LONG).show();
+                }.addOnFailureListener {
+                    Toast.makeText(activity, "Failed to Cancel Print", Toast.LENGTH_SHORT).show();
+                }
+                btn.text = "Start Print"
+                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                true
             }
-            btn.text = "Start Print"
-            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
-            true
+        } else {
+            btn.setOnClickListener{
+                Toast.makeText(activity, "Please select file from library!", Toast.LENGTH_SHORT).show();
+            }
+            nameOfFile.setText("Empty")
         }
+//        val btn : Button = viw.findViewById(R.id.button2)
+//        btn.setOnClickListener{
+////            xPosDelivered.setText(fuck.x_pos.toString())->
+//            val fileUrl = args?.get("url").toString()
+//            database = FirebaseDatabase.getInstance().getReference("Start Print")
+//            val commencePrint = BeginPrint("true",fileUrl)
+//            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+//                Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
+//            }.addOnFailureListener {
+//                Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+//            }
+//            btn.text = "Printing! Hold to cancel print."
+//            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+//        }
+//        btn.setOnLongClickListener{
+//            database = FirebaseDatabase.getInstance().getReference("Start Print")
+//            val commencePrint = BeginPrint("false",null)
+//            database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+//                Toast.makeText(activity, "Cancel Print!", Toast.LENGTH_LONG).show();
+//            }.addOnFailureListener {
+//                Toast.makeText(activity, "Failed to Cancel Print", Toast.LENGTH_SHORT).show();
+//            }
+//            btn.text = "Start Print"
+//            btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+//            true
+//        }e
         return view
     }
 
     private fun getUserData() {
 //        databasePC = FirebaseDatabase.getInstance().getReference("Printer Formatting Test")
-        databasePC = FirebaseDatabase.getInstance().getReference().child("Printer Formatting Test").child("Format")
+        databasePC = FirebaseDatabase.getInstance().getReference().child("Printer Formatting").child("Format")
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val pc = snapshot.getValue<PrinterControls>()
-                Toast.makeText(activity, "FOUND DATA", Toast.LENGTH_SHORT).show();
-                bedTempDisplay?.text = pc?.bed_temp.toString()+"\u00B0"
-                extTempDisplay?.text = pc?.ext_temp.toString()+"\u00B0"
-                extPosDisplay?.text = pc?.x_pos.toString()+"."+pc?.y_pos.toString()+"."+pc?.z_pos.toString()
-                fanSpeedDisplay?.text = pc?.fan_speed.toString()
+//                Toast.makeText(activity, "FOUND DATA", Toast.LENGTH_SHORT).show();
+//                bedTempDisplay?.text = pc?.bed_temp.toString()+"\u00B0"
+//                extTempDisplay?.text = pc?.ext_temp.toString()+"\u00B0"
+//                extPosDisplay?.text = pc?.x_pos.toString()+"."+pc?.y_pos.toString()+"."+pc?.z_pos.toString()
+//                fanSpeedDisplay?.text = pc?.fan_speed.toString()
+                bedTempDisplay?.setText(pc?.bed_temp.toString()+"\u00B0")
+                extTempDisplay?.setText(pc?.ext_temp.toString()+"\u00B0")
+                extPosDisplay?.setText(pc?.x_pos.toString()+"."+pc?.y_pos.toString()+"."+pc?.z_pos.toString())
+                fanSpeedDisplay?.setText(pc?.fan_speed.toString())
+                simpleChronometer?.start()
             }
 
             override fun onCancelled(error: DatabaseError) {
