@@ -7,17 +7,7 @@
     tools:context=".Formatting">
 
     <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:id="@+id/textView"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Formatting Fragment"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:textColor="@color/white" />-->
 
-    <!--    visual text and numPicker for Extruder Temperature-->
     <TextView
         android:id="@+id/textView_ExtTemp"
         android:layout_width="wrap_content"
@@ -25,35 +15,16 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="65dp"
         android:layout_marginRight="85dp"
-        android:text="Edit Extruder Temp"
+        android:text="Edit Bed Temp"
         android:textSize="20dp"
         android:textColor="@color/white" />
 
 
-    <!--    visual text and numPicker for Bed Temperature-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:layout_marginTop="30dp">-->
-
-
-<!--        &lt;!&ndash;    <NumberPicker&ndash;&gt;-->
-<!--        &lt;!&ndash;            android:id="@+id/numPickerExtTemp"&ndash;&gt;-->
-<!--        &lt;!&ndash;            android:layout_width="30dp"&ndash;&gt;-->
-<!--        &lt;!&ndash;            android:layout_height="100dp"&ndash;&gt;-->
-<!--        &lt;!&ndash;        android:theme="@style/AppTheme.Picker">&ndash;&gt;-->
-
-
-<!--        &lt;!&ndash;        </NumberPicker>&ndash;&gt;-->
-
-<!--    </LinearLayout>-->
 
     <EditText
-        android:id="@+id/numPickerExtTemp"
+        android:id="@+id/numPickerBedTemp"
         android:inputType="number"
-        android:hint="Temp 1-100"
+        android:hint="Temp 0-80"
         android:layout_width="110dp"
         android:layout_height="30dp"
         android:textSize="18dp"
@@ -70,31 +41,15 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="165dp"
         android:layout_marginRight="85dp"
-        android:text="Edit Bed Temp"
+        android:text="Edit Extruder Temp"
         android:textSize="20dp"
         android:textColor="@color/white" />
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginTop="130dp"-->
-<!--        android:layout_marginLeft="100dp">-->
 
-<!--        <NumberPicker-->
-<!--            android:id="@+id/numPickerBedTemp"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:theme="@style/AppTheme.Picker">-->
-
-
-<!--        </NumberPicker>-->
-
-<!--    </LinearLayout>-->
     <EditText
-        android:id="@+id/numPickerBedTemp"
+        android:id="@+id/numPickerExtTemp"
         android:inputType="number"
-        android:hint="Temp 1-100"
+        android:hint="Temp 0-220"
         android:layout_width="110dp"
         android:layout_height="30dp"
         android:textSize="18dp"
@@ -103,7 +58,7 @@
         android:layout_marginLeft="100dp"
         android:layout_marginTop="162dp"
         android:background="@color/white"></EditText>
-    <!--    visual text and numPicker for Fan Speed Position-->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,158 +69,27 @@
         android:textSize="20dp"
         android:textColor="@color/white" />
 
-<!--    NUMBER PICKER FOR FAN SPEED DIALOG-->
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginTop="230dp"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:background="@color/white"-->
-<!--        android:theme="@style/AppTheme.Picker">-->
-
-
-<!--        <NumberPicker-->
-<!--            android:id="@+id/numPickerFanSpeed"-->
-<!--            android:orientation="horizontal"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:theme="@style/AppTheme.Picker">-->
-
-
-<!--        </NumberPicker>-->
-
-<!--    </LinearLayout>-->
-
     <Button
         android:id="@+id/textView_FanSpeed"
         android:text="HIGH"
         android:layout_marginTop="255dp"
-        android:layout_marginLeft="220dp"
+        android:layout_marginLeft="230dp"
         android:layout_width="120dp"
         android:layout_height="40dp">
 
     </Button>
 
-<!--    <EditText-->
-<!--        android:id="@+id/numPickerFanSpeed"-->
-<!--        android:inputType="number"-->
-<!--        android:hint="Speed 20-100"-->
-<!--        android:layout_width="110dp"-->
-<!--        android:layout_height="30dp"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:layout_marginTop="262dp"-->
-<!--        android:textSize="18dp"-->
-<!--        android:background="@color/white"></EditText>-->
-
-    <!--    visual text and numPicker for Extruder Position-->
-<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:layout_marginTop="262dp">-->
-<!--        &lt;!&ndash;            android:layout_gravity="center_horizontal"&ndash;&gt;-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnOff"-->
-<!--            android:text="btn1"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="110dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:textSize="18dp" />-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnLow"-->
-<!--            android:text="btn1"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="110dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:textSize="18dp" />-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnHigh"-->
-<!--            android:text="btn1"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="110dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:textSize="18dp" />-->
-
-
-<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
-
-<!--    <com.google.android.material.button.MaterialButtonToggleGroup-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnOff"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="OFF" />-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnLow"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="LOW" />-->
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btnHigh"-->
-<!--            style="?attr/materialButtonOutlinedStyle"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="HIGH"/>-->
-
-
-<!--    </com.google.android.material.button.MaterialButtonToggleGroup>-->
-
-<!--    <LinearLayout-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center_horizontal"-->
-<!--        android:layout_marginTop="330dp"-->
-<!--        android:layout_marginLeft="100dp"-->
-<!--        android:theme="@style/AppTheme.Picker">-->
-
-<!--        <NumberPicker-->
-<!--            android:id="@+id/numPickerX"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:theme="@style/AppTheme.Picker">-->
-
-<!--        </NumberPicker>-->
-
-<!--        <NumberPicker-->
-<!--            android:id="@+id/numPickerY"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:theme="@style/AppTheme.Picker">-->
-
-<!--        </NumberPicker>-->
-
-<!--        <NumberPicker-->
-<!--            android:id="@+id/numPickerZ"-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="100dp"-->
-<!--            android:theme="@style/AppTheme.Picker">-->
-
-<!--        </NumberPicker>-->
-
-<!--    </LinearLayout>-->
 
     <EditText
         android:id="@+id/numPickerX"
         android:inputType="number"
         android:hint="X"
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="30dp"
         android:textSize="18dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="65dp"
+        android:layout_marginLeft="60dp"
         android:layout_marginTop="362dp"
         android:background="@color/white"></EditText>
 
@@ -273,7 +97,7 @@
         android:id="@+id/numPickerY"
         android:inputType="number"
         android:hint="Y"
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="30dp"
         android:textSize="18dp"
         android:gravity="center"
@@ -286,12 +110,12 @@
         android:id="@+id/numPickerZ"
         android:inputType="number"
         android:hint="Z"
-        android:layout_width="30dp"
+        android:layout_width="35dp"
         android:layout_height="30dp"
         android:textSize="18dp"
         android:gravity="center"
         android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="135dp"
+        android:layout_marginLeft="140dp"
         android:layout_marginTop="362dp"
         android:background="@color/white"></EditText>
     <Button

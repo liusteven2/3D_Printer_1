@@ -56,6 +56,7 @@ class Library : Fragment() {
     private var gcodeFile: gcodeFileClass? = null
     private var fileLengthReadable: String? = null
     private var fileNameNow: String? = null
+    private var fileUrlDatabase: String? = null
 
     //creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
@@ -64,6 +65,7 @@ class Library : Fragment() {
     //for sending information to firebase database
     private lateinit var database : DatabaseReference
     private lateinit var databaseGF : DatabaseReference
+    private lateinit var databasePC : DatabaseReference
     private lateinit var storage : StorageReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,103 +75,35 @@ class Library : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        val view2 = inflater.inflate(R.layout.fragment_home, container, false)
-//        val xPosDelivered : TextView = view2.findViewById(R.id.xPosDelivered)
         val view = inflater.inflate(R.layout.fragment_library, container, false)
-//        val btn : Button = view.findViewById(R.id.submitBtn)
         val selectbtn : Button = view.findViewById(R.id.selectBtn)
-//        database = FirebaseDatabase.getInstance().getReference("Users")
         database = FirebaseDatabase.getInstance().getReference("Print Files")
-//        storage = FirebaseStorage.getInstance().reference.child("Gcode Files")
-
-//        val getFile = registerForActivityResult(
-//            ActivityResultContracts.GetContent(),
-//            ActivityResultCallback {
-//                UploadFiles(it)
-//            })
-
-//        btn.setOnClickListener{
-////            selectFiles();
-//            val bundle = Bundle()
-//            bundle.putString("data","working??")
-//            val fragment = Home()
-//            fragment.arguments  = bundle
-//            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,fragment)?.commit()
-////            val editText : EditText = view.findViewById(R.id.submitEdittext)
-////            val input = editText.text.toString()
-////            val User = User(input)
-////            database.child(input).setValue(User).addOnSuccessListener {
-////                editText.text.clear()
-////                Toast.makeText(activity, "Successfully Saved",Toast.LENGTH_SHORT).show();
-////            }.addOnFailureListener {
-////                Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
-////            }
-//        }
 
         val getFile = registerForActivityResult(ActivityResultContracts.GetContent(),
             ActivityResultCallback {
-//                fileUri = it!!
-//                fileUri = it!!
-//                val builder1 = AlertDialog.Builder(requireActivity())
-//                val tet_textView =
-//                    inflater.inflate(R.layout.textview_layout, container, false)
-//                val textView: TextView = tet_textView.findViewById(R.id.et_textView)
-//
-//                with(builder1) {
-//                    setPositiveButton("Continue") { dialog, which ->
-//                        Toast.makeText(activity, "Press Continue if you ha", Toast.LENGTH_SHORT).show()
-                        if (it != Uri.EMPTY) {
-                            fileUri = it!!
-                            val builder = AlertDialog.Builder(requireActivity())
-                            val editText_view =
-                                inflater.inflate(R.layout.edit_text_layout, container, false)
-                            val editText: EditText = editText_view.findViewById(R.id.et_editText)
+                if (it != Uri.EMPTY) {
+                    fileUri = it!!
+                    val builder = AlertDialog.Builder(requireActivity())
+                    val editText_view =
+                        inflater.inflate(R.layout.edit_text_layout, container, false)
+                    val editText: EditText = editText_view.findViewById(R.id.et_editText)
 
-                            with(builder) {
-                                setTitle("Enter name of file!")
-                                setPositiveButton("OK") { dialog, which ->
-                                    fileName = editText.text.toString()
-                                    uploadFile()
-                                }
-                                setNegativeButton("Cancel") { dialog, which ->
-                                    Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT)
-                                        .show();
-                                }
-                                setView(editText_view)
-                                show()
-                            }
+                    with(builder) {
+                        setTitle("Enter name of file!")
+                        setPositiveButton("OK") { dialog, which ->
+                            fileName = editText.text.toString()
+                            uploadFile()
                         }
-//                    }
-//                    setNegativeButton("Cancel") { dialog, which ->
-//                        Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT).show();
-//                    }
-//                    setView(textView)
-//                    show()
-//                }
-//
-//                fileUri = it!!
-//                val builder = AlertDialog.Builder(requireActivity())
-//                val editText_view = inflater.inflate(R.layout.edit_text_layout, container, false)
-//                val editText: EditText = editText_view.findViewById(R.id.et_editText)
-//
-//                with(builder) {
-//                    setTitle("Enter some Text!")
-//                    setPositiveButton("OK"){dialog, which ->
-//                        fileName = editText.text.toString()
-//                        uploadFile()
-//                    }
-//                    setNegativeButton("Cancel"){dialog, which ->
-//                        Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT).show();
-//                    }
-//                    setView(editText_view)
-//                    show()
-//                }
-
-
+                        setNegativeButton("Cancel") { dialog, which ->
+                            Toast.makeText(activity, "Canceled File Upload", Toast.LENGTH_SHORT)
+                                .show();
+                        }
+                        setView(editText_view)
+                        show()
+                    }
+                }
             })
         selectbtn.setOnClickListener{
-//            val fileInent = Intent(Intent.ACTION_GET_CONTENT)
-//            startActivityForResult(fileInent, 222)
             val builder1 = AlertDialog.Builder(requireActivity())
             val tet_textView =inflater.inflate(R.layout.textview_layout, container, false)
             val textView: TextView = tet_textView.findViewById(R.id.et_textView)
@@ -179,27 +113,12 @@ class Library : Fragment() {
                     getFile.launch("application/octet-stream")
                 }
                 setNegativeButton("Cancel") { dialog, which ->
-                    Toast.makeText(activity, "Cancel File Upload", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Canceled File Upload", Toast.LENGTH_SHORT).show();
                 }
                 setView(tet_textView)
                 show()
             }
-//            checkFileUpload()
-//            xPosDelivered.setText("communicated")
         }
-//        MyAdapter.onItemClick
-
-
-//        databaseGF = FirebaseDatabase.getInstance().getReference().child("Print Files").child(fileUrl!!).get().addOnSuccessListener {
-////            if (it.exists()) {
-////                val pc = it.getValue<gcodeFileClass>()
-////                Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
-////            }
-//        }.addOnFailureListener{
-////            Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
-//        }
-
-//        databasePC = FirebaseDatabase.getInstance().getReference().child("Printer Formatting Test").child("Format")
         return view
     }
 
@@ -214,14 +133,13 @@ class Library : Fragment() {
         fileNameNow = formatter.format(now)
         storage = FirebaseStorage.getInstance().getReference("Print Files/"+fileName)
         uploadTask = storage.putFile(fileUri!!)
-//        val fileUrl = uploadTask.result.toString()
         var pfd = requireActivity().contentResolver.openFileDescriptor(fileUri!!, "r")
         var fileLength: Long? = pfd!!.getStatSize()
         fileLengthReadable = fileLength?.readableFormat()
 
 
 
-        Toast.makeText(activity, fileLengthReadable, Toast.LENGTH_LONG).show()
+//        Toast.makeText(activity, fileLengthReadable, Toast.LENGTH_LONG).show()
 
         uploadTask.addOnFailureListener {
             Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
@@ -231,7 +149,7 @@ class Library : Fragment() {
 
             storage.downloadUrl.addOnSuccessListener {
                 fileUrl = it.toString()
-                Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
             }
 
             gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())
@@ -240,72 +158,35 @@ class Library : Fragment() {
             if (progressDialog.isShowing) progressDialog.dismiss()
                 database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
 //    ======================================================================================================================================
-
-
-
-//
-                if (gcodeFile?.url != fileUrl) {
-                    gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
-                    database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-                        if (gcodeFile?.url == fileUrl)
-                            Toast.makeText(activity,"Successfully Saved to Database 2ND TRY DUMBASS",Toast.LENGTH_SHORT).show();
-                        else
-                            gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
-                            database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-                                if (gcodeFile?.url == fileUrl)
-                                    Toast.makeText(activity,"Successfully Saved to Database 3RD TRY HOLY FUCKKK U SUCK",Toast.LENGTH_SHORT).show();
-                                else
-                                    Toast.makeText(activity,"Hmm.. We've encountered an error. Please try uploading again.",Toast.LENGTH_LONG).show();
-                            }.addOnFailureListener{
-                                Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
-                            }
-                    }.addOnFailureListener{
-                        Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                    checkFileUpload()
+                    if (fileUrlDatabase != fileUrl) {
+                        gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
+                        database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+                            checkFileUpload()
+                            if (fileUrlDatabase == fileUrl)
+                                Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                            else
+                                gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
+                                database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
+                                    checkFileUpload()
+                                    if (fileUrlDatabase == fileUrl)
+                                        Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(activity,"Hmm.. We've encountered an error. Please try uploading again.",Toast.LENGTH_LONG).show();
+                                }.addOnFailureListener{
+                                    Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                                }
+                        }.addOnFailureListener{
+                            Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(activity,"Successfully Saved to Database",Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(activity,"Successfully Saved to Database 1ST TRY DAMN U KINDA GOOD",Toast.LENGTH_SHORT).show();
-                }
-//    ===============================^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^=========================================================
-//                while((gcodeFile?.url != fileUrl) && (counter != 5))  {
-//                    Toast.makeText(activity,"Made it to while loop"+counter,Toast.LENGTH_SHORT).show();
-//                    gcodeFile = gcodeFileClass(fileName,fileUrl.toString(),fileNameNow.toString(),fileLengthReadable.toString())
-//                    database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
-//                        if (gcodeFile?.url == fileUrl)
-//                        Toast.makeText(activity,"Successfully Saved to Database"+gcodeFile?.url,Toast.LENGTH_SHORT).show();
-//                    }.addOnFailureListener{
-//                        if (gcodeFile?.url == fileUrl)
-//                        Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-
-//    ======================================================================================================================================
                 }.addOnFailureListener {
                     Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
                 }
         }
     }
-
-//    private fun selectFiles() {
-////        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
-//        val intent = Intent()
-//        intent.type = "gcode/*"
-//        intent.setAction(Intent.ACTION_GET_CONTENT)
-//        startActivityForResult(Intent.createChooser(intent,"Select Gcode File..."),1)
-////        intent.action = Intent.ACTION_GET_CONTENT
-////        startActivityForResult(intent, 100)
-//    }
-
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode==222 && resultCode== Activity.RESULT_OK && data!=null && data.getData()!=null) (
-//                try {
-//                    val fileUri: Uri = data?.data!!
-//                }catch (e: IOException) {
-//                    e.printStackTrace()
-//                    Toast.makeText(activity, "Failed to pull file", Toast.LENGTH_SHORT).show()
-//                })
-//    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -366,31 +247,18 @@ class Library : Fragment() {
         return DecimalFormat("#,##0.#").format(this / 1024.00.pow(digitGroups.toDouble())).toString() + " " + units[digitGroups]
     }
 
+
     private fun checkFileUpload() {
-        databaseGF = FirebaseDatabase.getInstance().getReference().child("Print Files").child(fileName!!)
+        databasePC = FirebaseDatabase.getInstance().getReference().child("Print Files").child(fileName!!)
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val pc = snapshot.getValue<gcodeFileClass>()
-                if (pc?.url == fileUrl)
-                    Toast.makeText(activity, "File uploaded successfully", Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(activity, "Hmm.. upload unsuccessful. Please try again.", Toast.LENGTH_SHORT).show();
+                fileUrlDatabase = pc?.url.toString()
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(activity, "DID NOT FIND DATA", Toast.LENGTH_SHORT).show();
             }
         }
-        databaseGF.addValueEventListener(postListener)
-
+        databasePC.addListenerForSingleValueEvent(postListener)}
     }
-
-//    private fun launchPicker(){
-//        val mimeTypes = mutableListOf("gcode/*")
-//        val config = Config(BuildConfig.API_KEY)
-//    }
-}
-
-//class UploadFiles(data: Uri) {
-//
-//}

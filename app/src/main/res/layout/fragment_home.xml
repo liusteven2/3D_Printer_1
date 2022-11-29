@@ -7,25 +7,6 @@
     tools:context=".Home">
 
     <!-- TODO: Update blank fragment layout -->
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Home Fragment"-->
-<!--        android:textSize="26dp"-->
-<!--        android:layout_gravity="center"/>-->
-<!--    <EditText-->
-<!--        android:id="@+id/ediText"-->
-<!--        android:layout_width="350dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"/>-->
-
-<!--    <Button-->
-<!--        android:id="@+id/button"-->
-<!--        android:layout_marginTop="70dp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:text="Apply" />-->
 
     <Button
         android:id="@+id/button2"
@@ -57,7 +38,7 @@
         android:layout_height="wrap_content"
         android:text="Bed Temperature:"
         android:layout_marginTop="320dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -68,7 +49,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="320dp"
-        android:layout_marginLeft="275dp"
+        android:layout_marginLeft="265dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -79,7 +60,7 @@
         android:layout_height="wrap_content"
         android:text="Extruder Temperature:"
         android:layout_marginTop="338dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -90,7 +71,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="338dp"
-        android:layout_marginLeft="275dp"
+        android:layout_marginLeft="265dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -101,7 +82,7 @@
         android:layout_height="wrap_content"
         android:text="Extruder Position:"
         android:layout_marginTop="356dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -112,7 +93,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="356dp"
-        android:layout_marginLeft="275dp"
+        android:layout_marginLeft="265dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -123,7 +104,7 @@
         android:layout_height="wrap_content"
         android:text="Fan Speed:"
         android:layout_marginTop="374dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginLeft="50dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="15dp"/>
@@ -134,7 +115,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="374dp"
-        android:layout_marginLeft="275dp"
+        android:layout_marginLeft="265dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -144,8 +125,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Last Updated:"
-        android:layout_marginTop="400dp"
-        android:layout_marginLeft="60dp"
+        android:layout_marginTop="390dp"
+        android:layout_marginLeft="55dp"
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>
@@ -154,8 +135,8 @@
         android:id="@+id/simpleChronometer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
-        android:layout_marginLeft="140dp"
+        android:layout_marginTop="390dp"
+        android:layout_marginLeft="135dp"
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>
@@ -198,46 +179,5 @@
         android:layout_marginLeft="240dp"
         android:src="@drawable/online_green_dot" />
 
-<!--    <TextView-->
-<!--        android:id="@+id/xPosDelivered"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="xval"-->
-<!--        android:layout_marginTop="450dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textSize="17dp"/>-->
-
 
 </FrameLayout>
-
-<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent"-->
-<!--    android:background="@color/teal_200"-->
-<!--    tools:context=".Home">-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/ediText"-->
-<!--        android:layout_width="350dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-
-<!--    <Button-->
-<!--        android:id="@+id/button"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Apply"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/ediText"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        android:layout_marginTop="30dp"/>-->
-
-<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

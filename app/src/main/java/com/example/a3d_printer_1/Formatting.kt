@@ -16,23 +16,6 @@ import com.google.firebase.database.FirebaseDatabase
 import org.w3c.dom.Text
 
 
-//class Formatting : Fragment() {
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater, container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        // Inflate the layout for this fragment
-//        val view = inflater.inflate(R.layout.fragment_formatting, container, false)
-//        val textView : TextView = view.findViewById(R.id.textView)
-//        val args = this.arguments
-//        val inputData = args?.get("data")
-//        textView.text = inputData.toString()
-//        return view
-//    }
-//}
-
-
 class Formatting : Fragment() {
 
     //for sending information to firebase database
@@ -48,110 +31,21 @@ class Formatting : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_formatting, container, false)
-//        val textView : TextView = view.findViewById(R.id.textView)
-//        val args = this.arguments
-//        val inputData = args?.get("data")
-//        textView.text = inputData.toString()
-
-
-        var formatExtTemp : String? = null
-        var formatBedTemp : String? = null
-        var formatFanSpeed : String? = null
-        var formatXPos : String? = null
-        var formatYPos : String? = null
-        var formatZpos : String? = null
-
-        val extTemp : EditText = view.findViewById(R.id.numPickerExtTemp)
-        extTemp.filters = arrayOf<InputFilter>(MinMaxFilter(1,300))
-//        val a : Int = view.findViewById(R.id.numPickerExtTemp).text.toString().toInt()
-//        extTemp.text.isNotEmpty().apply {
-//            if(a > 100){
-//                formatExtTemp="100"
-////            extTemp.setText("100")
-//            } else {
-//                formatExtTemp=extTemp.text.toString()
-//            }
-//        }
-////        if(extTemp.text.toString().toInt()!=null && extTemp.text.toString().toInt() > 100){
-//            formatExtTemp="100"
-////            extTemp.setText("100")
-//        } else {
-//            formatExtTemp=extTemp.text.toString()
-//        }
-//        val extNumber = extTemp.text.toString().toIntOrNull()
-//        if (extNumber != null) {
-//            if (extTemp.text.toString().toInt() < 0) {
-//                extTemp.setText("0")
-//                formatExtTemp = extTemp.text.toString()
-//            } else if (extTemp.text.toString().toInt() > 100) {
-//                extTemp.setText("100")
-//                formatExtTemp = extTemp.text.toString()
-//            } else {
-//                formatExtTemp = extTemp.text.toString()}
-//        }
-//        val extTemp : NumberPicker = view.findViewById(R.id.numPickerExtTemp)
-//        extTemp.minValue = 0
-//        extTemp.maxValue = 100
 
         val bedTemp : EditText = view.findViewById(R.id.numPickerBedTemp)
-        bedTemp.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
-//        val bedNumber = bedTemp.text.toString().toIntOrNull()
-//        if (extNumber != null) {
-//            if (bedNumber < 0) {
-//                extTemp.setText("0")
-//            } else if (bedNumber > 100) {
-//                extTemp.setText("100")
-//                formatBedTemp = bedTemp.text.toString()
-//            } else {
-//                formatBedTemp = bedTemp.text.toString()}
-//        }
-//        bedTemp.minValue = 0
-//        bedTemp.maxValue = 100
+        bedTemp.filters = arrayOf<InputFilter>(MinMaxFilter(0,80))
 
-//        val fanSpeed : NumberPicker = view.findViewById(R.id.numPickerFanSpeed)
-//        fanSpeed.minValue = 0
-//        fanSpeed.maxValue = 100
-////        val fanSpeed : EditText = view.findViewById(R.id.numPickerFanSpeed)
-////        fanSpeed.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
-//        val fanSpeed : Button = view.findViewById(R.id.textView_FanSpeed)
-//        fanSpeed.setOnClickListener{
-//            if (fanSpeed.text.toString() == "HIGH") {
-//                fanSpeed.setText("LOW")
-//            } else if (fanSpeed.text.toString() == "LOW") {
-//                fanSpeed.setText("OFF")
-//            } else {
-//                fanSpeed.setText("HIGH")
-//            }
-//        }
+        val extTemp : EditText = view.findViewById(R.id.numPickerExtTemp)
+        extTemp.filters = arrayOf<InputFilter>(MinMaxFilter(0,220))
 
         val xVal : EditText = view.findViewById(R.id.numPickerX)
-        xVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,300))
-//        xVal.minValue = 0
-//        xVal.maxValue = 100
+        xVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,220))
 
         val yVal : EditText = view.findViewById(R.id.numPickerY)
-        yVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
-//        yVal.minValue = 0
-//        yVal.maxValue = 100
+        yVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,220))
 
         val zVal : EditText = view.findViewById(R.id.numPickerZ)
-        zVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,100))
-//        zVal.minValue = 0
-//        zVal.maxValue = 100
-
-//        var formatExtTemp : String? = null
-//        var formatBedTemp : String? = null
-//        var formatFanSpeed : String? = null
-//        var formatXPos : String? = null
-//        var formatYPos : String? = null
-//        var formatZpos : String? = null
-
-//        extTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatExtTemp = numberPicker.value.toString()}
-//        bedTemp.setOnValueChangedListener { numberPicker, i, i2 ->  formatBedTemp = numberPicker.value.toString()}
-//        fanSpeed.setOnValueChangedListener { numberPicker, i, i2 ->  formatFanSpeed = numberPicker.value.toString()}
-//        xVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatXPos = numberPicker.value.toString()}
-//        yVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatYPos = numberPicker.value.toString()}
-//        zVal.setOnValueChangedListener { numberPicker, i, i2 ->  formatZpos = numberPicker.value.toString()}
+        zVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,250))
 
         val fanSpeed : Button = view.findViewById(R.id.textView_FanSpeed)
         fanSpeed.setOnClickListener {
@@ -166,8 +60,7 @@ class Formatting : Fragment() {
         val btn : Button = view.findViewById(R.id.buttonApply)
         btn.setOnClickListener{
             database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
-//            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
-            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), "HIGH", xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
+            val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
             database.child("Format").setValue(newFormat).addOnSuccessListener {
                 Toast.makeText(activity, "Successfully Saved" + extTemp.text.toString(), Toast.LENGTH_SHORT).show();
             }.addOnFailureListener {
