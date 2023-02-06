@@ -138,9 +138,6 @@ class Library : Fragment() {
         fileLengthReadable = fileLength?.readableFormat()
 
 
-
-//        Toast.makeText(activity, fileLengthReadable, Toast.LENGTH_LONG).show()
-
         uploadTask.addOnFailureListener {
             Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
             if (progressDialog.isShowing) progressDialog.dismiss()
@@ -149,7 +146,6 @@ class Library : Fragment() {
 
             storage.downloadUrl.addOnSuccessListener {
                 fileUrl = it.toString()
-//                Toast.makeText(activity, "File location: " + fileUrl, Toast.LENGTH_SHORT).show()
             }
 
             gcodeFile = gcodeFileClass(fileName, fileUrl, fileNameNow.toString(), fileLengthReadable.toString())

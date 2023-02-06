@@ -62,7 +62,7 @@ class Formatting : Fragment() {
             database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
             val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), xVal.text.toString(), yVal.text.toString(), zVal.text.toString())
             database.child("Format").setValue(newFormat).addOnSuccessListener {
-                Toast.makeText(activity, "Successfully Saved" + extTemp.text.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Successfully Saved", Toast.LENGTH_SHORT).show();
             }.addOnFailureListener {
                 Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
             }

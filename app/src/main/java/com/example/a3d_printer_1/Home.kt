@@ -45,7 +45,6 @@ class Home : Fragment() {
         if ((fileUrl != "null") && (name != "null")){
             nameOfFile.text = name.toString()
             btn.setOnClickListener{
-//            xPosDelivered.setText(fuck.x_pos.toString())->
                 fileUrl = args?.get("url").toString()
                 database = FirebaseDatabase.getInstance().getReference("Start Print")
                 val commencePrint = BeginPrint("true",fileUrl)
