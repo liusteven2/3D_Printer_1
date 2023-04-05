@@ -1,7 +1,9 @@
 package com.example.a3d_printer_1
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import com.example.a3d_printer_1.databinding.ActivityMainBinding
 import java.text.Normalizer
@@ -15,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         replaceFragment(Home())
+
+//        val motionLayout = findViewById<androidx.constraintlayout.motion.widget.MotionLayout>(R.id.motionLayout)
+//        motionLayout.transitionToEnd()
+
 //        supportFragmentManager.beginTransaction().replace(R.id.frame_layout,Home()).commit()
         binding.bottomNavigationView.setOnItemSelectedListener {
 

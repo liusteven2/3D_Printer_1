@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#800000"
+    android:background="#500000"
     tools:context=".Home">
 
     <!-- TODO: Update blank fragment layout -->
@@ -16,10 +16,10 @@
         android:layout_marginTop="100dp"
         android:background="@drawable/round_button"
         android:backgroundTint="@color/white"
-        android:text="Start Print"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:textColor="@color/black"/>
 
+<!--    android:text="Start Print"-->
     <TextView
         android:id="@+id/nameOfFileToBePrinted"
         android:layout_width="wrap_content"
@@ -32,6 +32,29 @@
         android:text="model_plane"
         android:textColor="@color/black"
         android:textSize="20sp" />
+
+    <!-- TESTING SHAREDVIEWMODEL BEGIN -->
+
+    <TextView
+        android:id="@+id/nameOfFileToBePrintedTest"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/slightly_rounded_square_border"
+        android:backgroundTint="@color/white"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="model_plane"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+
+    <!-- TESTING SHAREDVIEWMODEL END -->
+<!--    <androidx.appcompat.widget.AppCompatTextView-->
+<!--        android:layout_width="371dp"-->
+<!--        android:layout_height="match_parent">-->
+
+<!--    </androidx.appcompat.widget.AppCompatTextView>-->
 
     <TextView
         android:layout_width="wrap_content"

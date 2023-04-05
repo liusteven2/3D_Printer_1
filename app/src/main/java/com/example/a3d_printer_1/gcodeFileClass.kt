@@ -17,4 +17,3 @@ package com.example.a3d_printer_1
 
 
 data class gcodeFileClass(val name: String? = null, val url: String? = null, val date: String? = null, val size: String? = null)
-

@@ -1,5 +1,10 @@
 package com.example.a3d_printer_1
 
+import android.app.AlertDialog
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
@@ -9,74 +14,211 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.app.NotificationCompat
+import androidx.core.content.getSystemService
+import androidx.fragment.app.activityViewModels //was auto added - needed for sharedViewModel/LiveData
+import com.example.a3d_printer_1.model.PrintFileViewModel //was auto added - needed for sharedViewModel/LiveData
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
 
 class Home : Fragment() {
-
+    // The following variables are needed to communicate with
     private lateinit var database : DatabaseReference
+    private lateinit var databaseSP : DatabaseReference
     private lateinit var databasePC : DatabaseReference
+    private lateinit var databaseTESTING: DatabaseReference
+
+    //for fragment communication - sharedview/viewmodel
+    private val sharedViewModel: PrintFileViewModel by activityViewModels()
 
     private var bedTempDisplay :TextView? = null
     private var extTempDisplay :TextView? = null
     private var extPosDisplay :TextView? = null
     private var fanSpeedDisplay :TextView? = null
+    private var nameOfFileTest : TextView? = null
+    private var btn : Button? = null
     private var simpleChronometer : Chronometer? = null
     private var fileUrl : String? = null
+    private var fileName : String? = null
     private var name : String? = null
+
+    //checking database for prev intiated print
+    private var prevfileName : String? = null
+    private var prevfileUrl : String? = null
+    private var prevPrintStarted : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //TESTING-------------------------------------------------------------------------------------------------------------
+//        databaseTESTING = FirebaseDatabase.getInstance().getReference().child("Start Print").child("Command Print")
+//        val postListenerTESTING = object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                Toast.makeText(activity, "SHIT WAS UPDATED PLEASE REFRESH PAGE", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                Toast.makeText(activity, "DID NOT FIND DATA", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//        databaseTESTING.addValueEventListener(postListenerTESTING)
+//        //TESTING-------------------------------------------------------------------------------------------------------------
+//        databaseSP = FirebaseDatabase.getInstance().getReference().child("Start Print").child("Command Print")
+//        databaseSP.addValueEventListener( object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                val commandPrint = snapshot.getValue<BeginPrint>()
+//                prevPrintStarted = commandPrint!!.beginPrint.toString()
+////                sharedViewModel.setFileName(commandPrint!!.fileName.toString())
+////                sharedViewModel.setFileUrl(commandPrint!!.fileUrl.toString())
+//
+//                if (prevPrintStarted == "true") {
+//                    prevfileName = commandPrint!!.fileName.toString()
+//                    prevfileUrl = commandPrint!!.fileUrl.toString()
+////                    sharedViewModel.setHasStartedPrint(true)
+////                    sharedViewModel.setHasFile(true)
+//                    sharedViewModel.setButtonText("Printing! Hold to cancel pint.")
+//                    btn?.text = sharedViewModel.readButtonText()
+//                    btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+//                    sharedViewModel.setHasStartedPrint(true)
+//                    sharedViewModel.setFileName(prevfileName!!)
+//                    sharedViewModel.setFileUrl(prevfileUrl!!)
+//                    sharedViewModel.setHasFile(true)
+//                    sharedViewModel.setHomeIsBusy(true)
+//                    nameOfFileTest?.setText(sharedViewModel.readFileName())
+//
+////                    fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
+//
+//                }
+//
+//                if (prevPrintStarted == "completed") {//new beginprint variable to check if print is complete
+////                        val notificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+////                        val CHANNEL_ID = "ChannelID"
+////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+////                            val ChannelName = "MyChannel"
+////                            val channel = NotificationChannel(CHANNEL_ID,ChannelName,NotificationManager.IMPORTANCE_DEFAULT)
+////                            notificationManager.createNotificationChannel(channel)
+////                        }
+////                        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+////                            .setSmallIcon(R.drawable.notification_icon)
+////                            .setContentTitle("My Notification")
+////                            .setContentText("Check Printer for newly completed print")
+////                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+////                        val notification = notificationBuilder.build()
+////                        notificationManager.notify(1, notification)
+//
+//                    val builder = AlertDialog.Builder(requireActivity())
+//                    with(builder) {
+//                        setTitle("Print Completed!y")
+//                        setPositiveButton("OK") { dialog, which ->
+//                            android.widget.Toast.makeText(activity, "Print Completed", android.widget.Toast.LENGTH_SHORT);
+//                        }
+//                        show()
+//                    }
+//                }
+//
+//            }
+//
+//        override fun onCancelled(error: DatabaseError) {
+//            TODO("Not yet implemented")
+//        }})
+//        //TESTING-------------------------------------------------------------------------------------------------------------
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val nameOfFile : TextView = view.findViewById(R.id.nameOfFileToBePrinted)
+        //Testing SharedViewModel here
+//        val nameOfFileTest : TextView = view.findViewById(R.id.nameOfFileToBePrintedTest)
+        nameOfFileTest = view.findViewById(R.id.nameOfFileToBePrintedTest)
         var args = this.arguments
         name = args?.get("fileName").toString()
         getUserData()
+//        getUserData1()
+//        Toast.makeText(activity, sharedViewModel.readHasFile().toString(), Toast.LENGTH_SHORT).show()
+        if (prevPrintStarted == "true") {
+            Toast.makeText(activity,"there is a prev file printing", Toast.LENGTH_SHORT).show()
+        }
         bedTempDisplay = view.findViewById(R.id.bedTempDisplay)
         extTempDisplay = view.findViewById(R.id.extTempDisplay)
         extPosDisplay = view.findViewById(R.id.extPosDisplay)
         fanSpeedDisplay = view.findViewById(R.id.fanSpeedDisplay)
         simpleChronometer = view.findViewById(R.id.simpleChronometer)
 
-        val btn : Button = view.findViewById(R.id.button2)
-        if ((fileUrl != "null") && (name != "null")){
+//        val btn : Button = view.findViewById(R.id.button2)
+        btn = view.findViewById(R.id.button2)
+        btn?.setText(sharedViewModel.readButtonText())
+        if (sharedViewModel.readButtonText() == "Printing! Hold to cancel pint.") {
+            btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+        } else {
+            btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP,30F)
+        }
+        if (sharedViewModel.readHasFile()){
+            btn?.isEnabled = true
+            btn?.isClickable = true
+            //Previous if statement delete line above and replace with following for orig: if ((fileUrl != "null") && (name != "null")){
             nameOfFile.text = name.toString()
-            btn.setOnClickListener{
-                fileUrl = args?.get("url").toString()
-                database = FirebaseDatabase.getInstance().getReference("Start Print")
-                val commencePrint = BeginPrint("true",fileUrl)
-                database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
-                    Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
-                }.addOnFailureListener {
-                    Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+            //Testing SharedViewModel here
+            nameOfFileTest?.setText(sharedViewModel.readFileName())
+            btn?.setOnClickListener{
+//                fileUrl = args?.get("url").toString()
+                //Testing SharedViewModel here
+                if (sharedViewModel.readHasFile()) {
+                    fileUrl = sharedViewModel.readFileUrl()
+                    fileName = sharedViewModel.readFileName()
+                    if (!sharedViewModel.readHasStartedPrint()) {
+                        database = FirebaseDatabase.getInstance().getReference("Start Print")
+                        val commencePrint = BeginPrint("true",fileUrl,fileName)
+                        database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
+                            Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
+                        }.addOnFailureListener {
+                            Toast.makeText(activity, "Begin Print Failed", Toast.LENGTH_SHORT).show();
+                        }
+                        sharedViewModel.setButtonText("Printing! Hold to cancel pint.")
+                        btn?.text = sharedViewModel.readButtonText()
+                        btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                        sharedViewModel.setHasStartedPrint(true)
+                    }
+                } else {
+                    Toast.makeText(activity, "Please select file from library!", Toast.LENGTH_SHORT).show();
                 }
-                btn.text = "Printing! Hold to cancel print."
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
             }
-            btn.setOnLongClickListener{
+            btn?.setOnLongClickListener{
                 database = FirebaseDatabase.getInstance().getReference("Start Print")
-                val commencePrint = BeginPrint("false",null)
-                nameOfFile.text = "Empty"
+                val commencePrint = BeginPrint("false",null,null)
+                nameOfFile.text = "Select File"
+                //Testing SharedViewModel here
+                nameOfFileTest?.setText("Select File")
                 name = "null"
                 fileUrl = "null"
                 args = null
+                sharedViewModel.setFileName("")
+                sharedViewModel.setFileUrl("")
+                sharedViewModel.setHasFile(false)
+                sharedViewModel.setHasStartedPrint(false)
+                sharedViewModel.setHomeIsBusy(false)
+//                btn.isEnabled = false
+
+
+
                 database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
                     Toast.makeText(activity, "Cancel Print!", Toast.LENGTH_LONG).show();
                 }.addOnFailureListener {
                     Toast.makeText(activity, "Failed to Cancel Print", Toast.LENGTH_SHORT).show();
                 }
-                btn.text = "Start Print"
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+
+                sharedViewModel.setButtonText("Start Print")
+                btn?.text = sharedViewModel.readButtonText()
+
+                btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
                 true
             }
         } else {
-            btn.setOnClickListener{
+            btn?.setOnClickListener{
                 Toast.makeText(activity, "Please select file from library!", Toast.LENGTH_SHORT).show();
             }
-            nameOfFile.setText("Empty")
+            nameOfFile.setText("Select File")
+            //Testing SharedViewModel here
+            nameOfFileTest?.setText("Select File")
         }
         return view
     }
@@ -99,4 +241,120 @@ class Home : Fragment() {
         }
         databasePC.addValueEventListener(postListener)
     }
-}
+
+//    private fun getUserData1() {
+//        if (!sharedViewModel.readHasStartedPrint() && !sharedViewModel.readHomeIsBusy()) {
+//            databaseSP = FirebaseDatabase.getInstance().getReference().child("Start Print").child("Command Print")
+//            val postListenerSP = object : ValueEventListener {
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//
+//                    val commandPrint = snapshot.getValue<BeginPrint>()
+//                    prevPrintStarted = commandPrint!!.beginPrint.toString()
+////                sharedViewModel.setFileName(commandPrint!!.fileName.toString())
+////                sharedViewModel.setFileUrl(commandPrint!!.fileUrl.toString())
+//
+//                    if (prevPrintStarted == "true") {
+//                        prevfileName = commandPrint!!.fileName.toString()
+//                        prevfileUrl = commandPrint!!.fileUrl.toString()
+////                    sharedViewModel.setHasStartedPrint(true)
+////                    sharedViewModel.setHasFile(true)
+//                        sharedViewModel.setButtonText("Printing! Hold to cancel pint.")
+//                        btn?.text = sharedViewModel.readButtonText()
+//                        btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+//                        sharedViewModel.setHasStartedPrint(true)
+//                        sharedViewModel.setFileName(prevfileName!!)
+//                        sharedViewModel.setFileUrl(prevfileUrl!!)
+//                        sharedViewModel.setHasFile(true)
+//                        sharedViewModel.setHomeIsBusy(true)
+//                        nameOfFileTest?.setText(sharedViewModel.readFileName())
+//
+//                        fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
+//
+//                    }
+//
+//                    if (prevPrintStarted == "completed") {//new beginprint variable to check if print is complete
+////                        val notificationManager = activity?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+////                        val CHANNEL_ID = "ChannelID"
+////                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+////                            val ChannelName = "MyChannel"
+////                            val channel = NotificationChannel(CHANNEL_ID,ChannelName,NotificationManager.IMPORTANCE_DEFAULT)
+////                            notificationManager.createNotificationChannel(channel)
+////                        }
+////                        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
+////                            .setSmallIcon(R.drawable.notification_icon)
+////                            .setContentTitle("My Notification")
+////                            .setContentText("Check Printer for newly completed print")
+////                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+////                        val notification = notificationBuilder.build()
+////                        notificationManager.notify(1, notification)
+//
+//                        val builder = AlertDialog.Builder(requireActivity())
+//                        with(builder) {
+//                            setTitle("Print Completed!y")
+//                            setPositiveButton("OK") { dialog, which ->
+//                                android.widget.Toast.makeText(activity, "Print Completed", android.widget.Toast.LENGTH_SHORT);
+//                            }
+//                            show()
+//                        }
+//                    }
+//
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                    TODO("Not yet implemented")
+//                }
+//            }
+//            databaseSP.addValueEventListener(postListenerSP)
+//        }
+    }
+//}
+
+//val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//val channelId = "my_channel_id"
+//val channelName = "My Channel"
+//val importance = NotificationManager.IMPORTANCE_DEFAULT
+//if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//    val channel = NotificationChannel(channelId, channelName, importance)
+//    notificationManager.createNotificationChannel(channel)
+//}
+//val notificationBuilder = NotificationCompat.Builder(this, channelId)
+//    .setContentTitle("Data updated")
+//    .setContentText("New value: $data")
+//    .setSmallIcon(R.drawable.ic_notification)
+//    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//val notification = notificationBuilder.build()
+//notificationManager.notify(1, notification)
+
+//myRef.addValueEventListener(object : ValueEventListener {
+//    override fun onDataChange(snapshot: DataSnapshot) {
+//        val data = snapshot.getValue(String::class.java)
+//        if (data != null) {
+//            // Show notification
+//            val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//            val channelId = "my_channel_id"
+//            val channelName = "My Channel"
+//            val importance = NotificationManager.IMPORTANCE_DEFAULT
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                val channel = NotificationChannel(channelId, channelName, importance)
+//                notificationManager.createNotificationChannel(channel)
+//            }
+//            val notificationBuilder = NotificationCompat.Builder(this@MainActivity, channelId)
+//                .setContentTitle("Data updated")
+//                .setContentText("New value: $data")
+//                .setSmallIcon(R.drawable.ic_notification)
+//                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+//            val notification = notificationBuilder.build()
+//            notificationManager.notify(1, notification)
+//        }
+//    }
+//
+//    override fun onCancelled(error: DatabaseError) {
+//        Log.w(TAG, "Failed to read value.", error.toException())
+//    }
+//})
+//Again, note that data is the updated value of the data in Firebase Realtime Database. You will need to replace this with the appropriate value for your app.
+//
+
+
+
+
