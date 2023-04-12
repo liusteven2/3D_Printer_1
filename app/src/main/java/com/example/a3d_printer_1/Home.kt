@@ -167,7 +167,7 @@ class Home : Fragment() {
                     fileName = sharedViewModel.readFileName()
                     if (!sharedViewModel.readHasStartedPrint()) {
                         database = FirebaseDatabase.getInstance().getReference("Start Print")
-                        val commencePrint = BeginPrint("true",fileUrl,fileName)
+                        val commencePrint = BeginPrint("false",fileUrl,fileName)
                         database.child("Command Print").setValue(commencePrint).addOnSuccessListener {
                             Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
                         }.addOnFailureListener {
