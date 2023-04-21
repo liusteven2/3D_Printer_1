@@ -1,6 +1,7 @@
 package com.example.a3d_printer_1
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -18,6 +19,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.getSystemService
 import androidx.fragment.app.activityViewModels //was auto added - needed for sharedViewModel/LiveData
 import com.example.a3d_printer_1.model.PrintFileViewModel //was auto added - needed for sharedViewModel/LiveData
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.getValue
 
@@ -126,12 +128,12 @@ class Home : Fragment() {
 //        }})
 //        //TESTING-------------------------------------------------------------------------------------------------------------
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        val nameOfFile : TextView = view.findViewById(R.id.nameOfFileToBePrinted)
+//        val nameOfFile : TextView = view.findViewById(R.id.nameOfFileToBePrinted)
         //Testing SharedViewModel here
 //        val nameOfFileTest : TextView = view.findViewById(R.id.nameOfFileToBePrintedTest)
         nameOfFileTest = view.findViewById(R.id.nameOfFileToBePrintedTest)
-        var args = this.arguments //remove/delete
-        name = args?.get("fileName").toString() //remove/delete
+//        var args = this.arguments //remove/delete
+//        name = args?.get("fileName").toString() //remove/delete
         getUserData()
         getUserData1()
 //        Toast.makeText(activity, sharedViewModel.readHasFile().toString(), Toast.LENGTH_SHORT).show()
@@ -159,7 +161,7 @@ class Home : Fragment() {
             btn?.isEnabled = true
             btn?.isClickable = true
             //Previous if statement delete line above and replace with following for orig: if ((fileUrl != "null") && (name != "null")){
-            nameOfFile.text = name.toString() //remove/delete
+//            nameOfFile.text = name.toString() //remove/delete
             //Testing SharedViewModel here
             nameOfFileTest?.setText(sharedViewModel.readFileName())
             btn?.setOnClickListener{
@@ -171,7 +173,7 @@ class Home : Fragment() {
                     if (!sharedViewModel.readHasStartedPrint()) {
 //                        database = FirebaseDatabase.getInstance().getReference("Start Print")
                         database = FirebaseDatabase.getInstance().getReference("Start Print 3").child("Command Print") //testing please delete
-                        val commencePrint = BeginPrint("false","True", fileUrl,fileName)
+                        val commencePrint = BeginPrint("false","true", fileUrl,fileName)
                         database.setValue(commencePrint).addOnSuccessListener {
                             Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show();
                         }.addOnFailureListener {
@@ -188,7 +190,7 @@ class Home : Fragment() {
             }
             btn?.setOnLongClickListener{
                 val commencePrint = BeginPrint("", "false","","")
-                nameOfFile.text = "Select File"
+//                nameOfFile.text = "Select File"
                 //Testing SharedViewModel here
                 nameOfFileTest?.setText("Select File")
                 fileUrl = "null" //possibly remove/delete
@@ -244,7 +246,7 @@ class Home : Fragment() {
             btn?.setOnClickListener{
                 Toast.makeText(activity, "Please select file from library!", Toast.LENGTH_SHORT).show();
             }
-            nameOfFile.setText("Select File")
+//            nameOfFile.setText("Select File")
             //Testing SharedViewModel here
             nameOfFileTest?.setText("Select File")
         }
@@ -287,32 +289,47 @@ class Home : Fragment() {
                     sharedViewModel.setButtonText("Start Print")
                     btn?.text = sharedViewModel.readButtonText()
                     btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
+                    val commencePrint = BeginPrint("", "false","","")
                     true
-                    val builder = AlertDialog.Builder(requireActivity())
-                    with(builder) {
-                        setTitle("Print Completed!")
-                        setPositiveButton("OK") { dialog, which ->
-                            val commencePrint = BeginPrint("", "false","","")
-                            database.setValue(commencePrint)
-                            android.widget.Toast.makeText(activity, "Print Completed", android.widget.Toast.LENGTH_SHORT);
+                    if (isAdded) {
+                        val builder = AlertDialog.Builder(requireContext())
+                        with(builder) {
+                            setTitle("Print Completed!")
+                            setPositiveButton("OK") { dialog, which ->
+                                val commencePrint = BeginPrint("", "false","","")
+                                database.setValue(commencePrint)
+                                fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
+                            }
+                            show()
                         }
-                        show()
+
                     }
-                } else if (prevPrintStarted == "false") {
+                } else if ((prevPrintStarted == "false") and !(sharedViewModel.readHasStartedPrint())) {
 
                         prevfileName = commandPrint!!.fileName.toString()
                         prevfileNumLines = commandPrint!!.fileNumLines.toString()
 //                    sharedViewModel.setHasStartedPrint(true)
 //                    sharedViewModel.setHasFile(true)
                         sharedViewModel.setButtonText("Printing! Hold to cancel pint.")
-//                        btn?.text = sharedViewModel.readButtonText()
-//                        btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
+                        btn?.text = sharedViewModel.readButtonText()
+                        btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20F)
                         sharedViewModel.setHasStartedPrint(true)
                         sharedViewModel.setFileName(prevfileName!!)
                         sharedViewModel.setFileNumLines(prevfileNumLines!!)
                         sharedViewModel.setHasFile(true)
                         sharedViewModel.setHomeIsBusy(true)
                         nameOfFileTest?.setText(sharedViewModel.readFileName())
+                        if (isAdded) {
+                            val builder = AlertDialog.Builder(requireContext())
+                            with(builder) {
+                                setTitle("Print in Progress...")
+                                setPositiveButton("OK") { dialog, which ->
+                                    fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
+                                }
+                                show()
+                            }
+
+                        }
 
 //                        fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
                 }
@@ -322,6 +339,20 @@ class Home : Fragment() {
                 Toast.makeText(activity, "DID NOT FIND DATA", Toast.LENGTH_SHORT).show();
             }
         }
+//        if (prevPrintStarted == "true") {
+//            val builder = AlertDialog.Builder(requireContext())
+//            with(builder) {
+//                setTitle("Print Completed!")
+//                setPositiveButton("OK") { dialog, which ->
+//                    val commencePrint = BeginPrint("", "false","","")
+//                    database.setValue(commencePrint)
+//                    android.widget.Toast.makeText(activity, "Print Completed", android.widget.Toast.LENGTH_SHORT);
+//                }
+//                show()
+//            }
+//        }
+
+
 //        database = FirebaseDatabase.getInstance().getReference("Start Print 3").child("Command Print") //testing please delete
 //        val postListenerSP = object : ValueEventListener {
 //            override fun onDataChange(snapshot: DataSnapshot) {
@@ -425,6 +456,19 @@ class Home : Fragment() {
 //            databaseSP.addValueEventListener(postListenerSP)
 //        }
     }
+
+//    private fun showDialog(commencePrint: BeginPrint?) {
+//        val builder = AlertDialog.Builder(R.layout.fragment_home)
+//        with(builder) {
+//            setTitle("Print Completed!")
+//            setPositiveButton("OK") { dialog, which ->
+//                database.setValue(commencePrint)
+//                android.widget.Toast.makeText(activity, "Print Completed", android.widget.Toast.LENGTH_SHORT);
+//            }
+//            show()
+//        }
+//
+//    }
 }
 
 //val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

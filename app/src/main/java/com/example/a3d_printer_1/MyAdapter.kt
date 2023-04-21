@@ -101,10 +101,10 @@ class MyAdapter(private val gcodeFileList : ArrayList<gcodeFileClass>) : Recycle
                 listener.onItemClick(adapterPosition)
             }
 
-//            itemView.setOnLongClickListener{
-//                listener.onLongItemClick(adapterPosition)
-////                true
-//            }
+            itemView.setOnLongClickListener{
+                listener.onLongItemClick(adapterPosition)
+                true
+            }
 
         }
     }

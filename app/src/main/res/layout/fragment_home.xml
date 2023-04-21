@@ -27,7 +27,7 @@
         android:background="@drawable/slightly_rounded_square_border"
         android:backgroundTint="@color/white"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="model_plane"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="20sp" />
 
@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:text="Bed Temperature:"
         android:layout_marginTop="320dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="320dp"
-        android:layout_marginLeft="265dp"
+        android:layout_marginLeft="255dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -81,7 +81,7 @@
         android:layout_height="wrap_content"
         android:text="Extruder Temperature:"
         android:layout_marginTop="338dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -92,7 +92,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="338dp"
-        android:layout_marginLeft="265dp"
+        android:layout_marginLeft="255dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -103,7 +103,7 @@
         android:layout_height="wrap_content"
         android:text="Extruder Position:"
         android:layout_marginTop="356dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="17dp"/>
@@ -114,7 +114,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="356dp"
-        android:layout_marginLeft="265dp"
+        android:layout_marginLeft="255dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:text="Fan Speed:"
         android:layout_marginTop="374dp"
-        android:layout_marginLeft="50dp"
+        android:layout_marginLeft="40dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="15dp"/>
@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:text="#"
         android:layout_marginTop="374dp"
-        android:layout_marginLeft="265dp"
+        android:layout_marginLeft="255dp"
         android:layout_marginRight="10dp"
         android:textColor="@color/white"
         android:textStyle="bold"
@@ -147,7 +147,7 @@
         android:layout_height="wrap_content"
         android:text="Last Updated:"
         android:layout_marginTop="390dp"
-        android:layout_marginLeft="55dp"
+        android:layout_marginLeft="45dp"
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>
@@ -157,7 +157,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="390dp"
-        android:layout_marginLeft="135dp"
+        android:layout_marginLeft="125dp"
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>

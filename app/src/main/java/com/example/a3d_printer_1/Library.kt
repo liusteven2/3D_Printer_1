@@ -154,15 +154,14 @@ class Library : Fragment() {
                             if (line == null) {
                                 databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnSuccessListener {
                                     if (progressDialog.isShowing) progressDialog.dismiss()
+                                        Toast.makeText(activity, "File Upload Success!", Toast.LENGTH_SHORT).show()
                                 }.addOnFailureListener{
                                     if (progressDialog.isShowing) progressDialog.dismiss()
+                                        Toast.makeText(activity, "File Upload Failed!", Toast.LENGTH_SHORT).show()
                                 }
-//                                i_fb_line = i_fb_line.inc()
                                 stringBuilder.clear()
                             }
                         }
-//                        uploadFile()
-//                        if (progressDialog.isShowing) progressDialog.dismiss()
                     }
                     setNegativeButton("Cancel") { dialog, which ->
                         Toast.makeText(activity, "File Upload Canceled", Toast.LENGTH_SHORT)
@@ -237,12 +236,7 @@ class Library : Fragment() {
         fileLengthReadable = fileLength?.readableFormat()
 
 
-        uploadTask.addOnFailureListener {
-//            Toast.makeText(activity, "File Upload to Storage Failed", Toast.LENGTH_SHORT).show()
-//            if (progressDialog.isShowing) progressDialog.dismiss()
-        }.addOnSuccessListener{
-//            Toast.makeText(activity, "File Upload to Storage Success", Toast.LENGTH_SHORT).show()
-//            if (progressDialog.isShowing) progressDialog.dismiss()
+        uploadTask.addOnSuccessListener{
             storage.downloadUrl.addOnSuccessListener {
                 fileUrl = it.toString()
             }
@@ -250,11 +244,10 @@ class Library : Fragment() {
             gcodeFile = gcodeFileClass(fileName, "", fileNameNow.toString(), fileLengthReadable.toString())
 
 
-            val counter: Int? = 0
-//            if (progressDialog.isShowing) progressDialog.dismiss()
 
             database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
                 database.child(fileName!!).child("numLines").setValue(i_fb_line.toString())
+                fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Library())?.commit()
             }.addOnFailureListener {
                 Toast.makeText(activity, "Failed Saved to Database", Toast.LENGTH_SHORT).show();
             }
@@ -318,7 +311,25 @@ class Library : Fragment() {
                         }
 
                         override fun onLongItemClick(position: Int) {
-                            Toast.makeText(activity, "long click is working", Toast.LENGTH_LONG).show();
+                            temp_fileName = userArrayList[position].name
+                            if (isAdded) {
+                                val builder = AlertDialog.Builder(requireContext())
+                                with(builder) {
+                                    setTitle("Are you sure you want to delete: $temp_fileName?")
+                                    setPositiveButton("OK") { dialog, which ->
+//                                        val commencePrint = BeginPrint("", "false","","")
+//                                        database.setValue(commencePrint)
+//                                        fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
+                                        database.child(temp_fileName.toString()).removeValue().addOnSuccessListener {
+                                            Toast.makeText(activity, "Successfully Removed!", Toast.LENGTH_LONG).show();
+                                            fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Library())?.commit()
+                                        }
+                                        databaseParsedLines.child(temp_fileName.toString()).removeValue()
+                                    }
+                                    show()
+                                }
+
+                            }
                         }
 
                     })
