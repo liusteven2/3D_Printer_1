@@ -4,6 +4,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import org.w3c.dom.Text
 
@@ -33,11 +35,34 @@ class MyAdapter(private val gcodeFileList : ArrayList<gcodeFileClass>) : Recycle
 
     private lateinit var mListener: onItemClickListener
 
+    //testing begin
+
+    private val diffCallback = object : DiffUtil.ItemCallback<gcodeFileClass>() {
+        override fun areItemsTheSame(oldItem: gcodeFileClass, newItem: gcodeFileClass): Boolean {
+            return true
+        }
+
+        override fun areContentsTheSame(oldItem: gcodeFileClass, newItem: gcodeFileClass): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    val differ = AsyncListDiffer(this, diffCallback)
+
+
+    //testing end
+
     interface onItemClickListener{
         fun onItemClick(position: Int)
+        fun onLongItemClick(position: Int)
     }
 
     fun setOnClickListener(listener: onItemClickListener){
+        mListener = listener
+    }
+
+    fun setOnLongClickListener(listener: onItemClickListener) {
         mListener = listener
     }
 
@@ -52,6 +77,10 @@ class MyAdapter(private val gcodeFileList : ArrayList<gcodeFileClass>) : Recycle
         holder.fileDate.text = "Timestamp: " + currentitem.date
         holder.fileSize.text = "File Size: " + currentitem.size
 
+//        val item = differ.currentList[position]
+//        holder.apply {
+//            et_textView.text = ""
+//        }
 //        holder.itemView.setOnClickListener{
 //            onItemClick?
 //        }
@@ -71,6 +100,12 @@ class MyAdapter(private val gcodeFileList : ArrayList<gcodeFileClass>) : Recycle
             itemView.setOnClickListener{
                 listener.onItemClick(adapterPosition)
             }
+
+//            itemView.setOnLongClickListener{
+//                listener.onLongItemClick(adapterPosition)
+////                true
+//            }
+
         }
     }
 

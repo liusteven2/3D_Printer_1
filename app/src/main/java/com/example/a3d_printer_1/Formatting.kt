@@ -44,13 +44,13 @@ class Formatting : Fragment() {
         extTemp.filters = arrayOf<InputFilter>(MinMaxFilter(0,220))
 
         val xVal : EditText = view.findViewById(R.id.numPickerX)
-        xVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,220))
+        xVal.filters = arrayOf<InputFilter>(MinMaxFilter(0,220))
 
         val yVal : EditText = view.findViewById(R.id.numPickerY)
-        yVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,220))
+        yVal.filters = arrayOf<InputFilter>(MinMaxFilter(0,220))
 
         val zVal : EditText = view.findViewById(R.id.numPickerZ)
-        zVal.filters = arrayOf<InputFilter>(MinMaxFilter(1,250))
+        zVal.filters = arrayOf<InputFilter>(MinMaxFilter(0,250))
 
         val fanSpeed : Button = view.findViewById(R.id.textView_FanSpeed)
         fanSpeed.setOnClickListener {
@@ -65,13 +65,13 @@ class Formatting : Fragment() {
         val btn : Button = view.findViewById(R.id.buttonApply)
         btn.setOnClickListener{
             if(sharedViewModel.readHasStartedPrint()) {
-                database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
-                val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), "", "", "")
-                database.child("Format").setValue(newFormat).addOnSuccessListener {
-                    Toast.makeText(activity, "Successfully Saved", Toast.LENGTH_SHORT).show();
-                }.addOnFailureListener {
-                    Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
-                }
+//                database = FirebaseDatabase.getInstance().getReference("Printer Formatting")
+//                val newFormat = PrinterControls(extTemp.text.toString(), bedTemp.text.toString(), fanSpeed.text.toString(), "", "", "")
+//                database.child("Format").setValue(newFormat).addOnSuccessListener {
+//                    Toast.makeText(activity, "Successfully Saved", Toast.LENGTH_SHORT).show();
+//                }.addOnFailureListener {
+//                    Toast.makeText(activity, "Failed Saved", Toast.LENGTH_SHORT).show();
+//                }
                 Toast.makeText(activity, "Note: Can only change bed and extruder temperatures and fan speed while printing!", Toast.LENGTH_SHORT).show();
             } else {
                 database = FirebaseDatabase.getInstance().getReference("Printer Formatting")

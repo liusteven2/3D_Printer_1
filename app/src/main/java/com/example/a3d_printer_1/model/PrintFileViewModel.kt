@@ -7,8 +7,8 @@ class PrintFileViewModel : ViewModel() {
     private var _file_name = MutableLiveData<String>("")
     var file_name: LiveData<String> = _file_name
 
-    private var _file_url = MutableLiveData<String>("")
-    var file_url: LiveData<String> = _file_url
+    private var _file_num_lines = MutableLiveData<String>("")
+    var file_num_lines: LiveData<String> = _file_num_lines
 
     private var _button_text = MutableLiveData<String>("Start Print")
     var button_text: LiveData<String> = _button_text
@@ -31,8 +31,8 @@ class PrintFileViewModel : ViewModel() {
         _button_text.value = desiredBtnText
     }
 
-    fun setFileUrl(desiredUrl: String) {
-        _file_url.value = desiredUrl
+    fun setFileNumLines(desiredNumLines: String) {
+        _file_num_lines.value = desiredNumLines
     }
 
     fun setHasFile(hasFile: Boolean) {
@@ -51,8 +51,8 @@ class PrintFileViewModel : ViewModel() {
         return _file_name.value!!
     }
 
-    fun readFileUrl(): String {
-        return _file_url.value!!
+    fun readFileNumLines(): String {
+        return _file_num_lines.value!!
     }
 
     fun readButtonText(): String {
