@@ -20,14 +20,6 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="First Name: "-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="20sp"-->
-<!--                android:textStyle="bold"/>-->
-
             <TextView
                 android:id="@+id/fileName"
                 android:layout_width="wrap_content"
@@ -37,16 +29,6 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
-
-<!--            <TextView-->
-<!--                android:id="@+id/fileSize"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginLeft="100dp"-->
-<!--                android:text="File Size Here"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="16sp"-->
-<!--                android:textStyle="bold"/>-->
 
         </LinearLayout>
 

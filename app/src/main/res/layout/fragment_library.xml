@@ -16,8 +16,6 @@
         android:layout_marginLeft="55dp"
         android:textStyle="italic"/>
 
-    <!--        android:layout_width="320dp"-->
-    <!--        android:layout_height="550dp"-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
@@ -28,7 +26,6 @@
         android:layout_marginBottom="35dp"
         android:background="@drawable/slightly_rounded_square_border"
         tools:listitem="@layout/user_item" />
-
 
     <Button
         android:id="@+id/selectBtn"

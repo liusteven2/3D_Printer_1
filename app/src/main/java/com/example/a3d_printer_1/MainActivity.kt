@@ -18,10 +18,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         replaceFragment(Home())
 
-//        val motionLayout = findViewById<androidx.constraintlayout.motion.widget.MotionLayout>(R.id.motionLayout)
-//        motionLayout.transitionToEnd()
-
-//        supportFragmentManager.beginTransaction().replace(R.id.frame_layout,Home()).commit()
         binding.bottomNavigationView.setOnItemSelectedListener {
 
             when(it.itemId) {

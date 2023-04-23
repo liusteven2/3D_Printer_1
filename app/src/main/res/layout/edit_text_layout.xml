@@ -16,16 +16,5 @@
         android:maxLength="23"
         tools:ignore="MissingConstraints" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/et_editText"-->
-<!--        android:inputType="text"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:hint="Enter a name for the File"-->
-<!--        android:textSize="16sp"-->
-<!--        android:layout_marginHorizontal="20dp"-->
-<!--        android:maxLength="23"-->
-<!--        tools:ignore="MissingConstraints" />-->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

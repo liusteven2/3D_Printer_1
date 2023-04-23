@@ -18,23 +18,23 @@
         android:textColor="@color/black"/>
 
 <!--    android:text="Start Print"-->
-    <TextView
-        android:id="@+id/nameOfFileToBePrinted"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/slightly_rounded_square_border"
-        android:backgroundTint="@color/white"
-        android:gravity="center|center_horizontal|center_vertical"
-        android:text=""
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/nameOfFileToBePrinted"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginTop="40dp"-->
+<!--        android:background="@drawable/slightly_rounded_square_border"-->
+<!--        android:backgroundTint="@color/white"-->
+<!--        android:gravity="center|center_horizontal|center_vertical"-->
+<!--        android:text=""-->
+<!--        android:textColor="@color/black"-->
+<!--        android:textSize="20sp" />-->
 
     <!-- TESTING SHAREDVIEWMODEL BEGIN -->
 
     <TextView
-        android:id="@+id/nameOfFileToBePrintedTest"
+        android:id="@+id/nameOfFileToBePrinted"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -45,14 +45,6 @@
         android:text="model_plane"
         android:textColor="@color/black"
         android:textSize="20sp" />
-
-
-    <!-- TESTING SHAREDVIEWMODEL END -->
-<!--    <androidx.appcompat.widget.AppCompatTextView-->
-<!--        android:layout_width="371dp"-->
-<!--        android:layout_height="match_parent">-->
-
-<!--    </androidx.appcompat.widget.AppCompatTextView>-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -161,44 +153,6 @@
         android:textColor="@color/white"
         android:textStyle="italic"
         android:textSize="12dp"/>
-
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Printer Status: "-->
-<!--        android:layout_marginTop="440dp"-->
-<!--        android:layout_marginLeft="120dp"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textSize="17dp"/>-->
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Server Status: "-->
-<!--        android:layout_marginTop="458dp"-->
-<!--        android:layout_marginLeft="120dp"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textSize="17dp"/>-->
-
-<!--    <ImageView-->
-<!--        android:layout_width="13dp"-->
-<!--        android:layout_height="13dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginTop="446dp"-->
-<!--        android:layout_marginLeft="240dp"-->
-<!--        android:src="@drawable/online_green_dot" />-->
-<!--    <ImageView-->
-<!--        android:layout_width="13dp"-->
-<!--        android:layout_height="13dp"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_alignParentEnd="true"-->
-<!--        android:layout_marginTop="464dp"-->
-<!--        android:layout_marginLeft="240dp"-->
-<!--        android:src="@drawable/online_green_dot" />-->
 
 
 </FrameLayout>

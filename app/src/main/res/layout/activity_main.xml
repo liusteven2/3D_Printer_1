@@ -17,12 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-        <!--        <Button-->
-        <!--            android:id="@+id/fragment1btn"-->
-        <!--            android:layout_width="150dp"-->
-        <!--            android:layout_height="60dp"-->
-        <!--            android:backgroundTint="@color/black"-->
-        <!--            android:text="Fragment 1"/>-->
 
     </FrameLayout>
 
