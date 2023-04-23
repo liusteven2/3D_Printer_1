@@ -169,7 +169,7 @@ class Library : Fragment() {
                                         if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
                                             i_line = i_line?.inc()
 
-                                            //ignore comments after line
+                                            //ignore gcode comments after instruction
                                             if (line.indexOf(';') > 0) {
                                                 line = line.substring(0, line.indexOf(';'))
                                             }
@@ -269,8 +269,9 @@ class Library : Fragment() {
                         val gcodefile = userSnapshot.getValue(gcodeFileClass::class.java)
                         userArrayList.add(gcodefile!!) //note double exclamation points will throw an exception on null value
                     }
-                    userRecyclerView.adapter = adapter //update view
 
+                    //interactive library responses
+                    userRecyclerView.adapter = adapter //update view
                     adapter.setOnClickListener(object : MyAdapter.onItemClickListener{
 
                         //short click on item sends info to home tab to initiate print

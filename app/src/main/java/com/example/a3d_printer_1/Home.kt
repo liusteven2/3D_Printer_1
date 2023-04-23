@@ -40,7 +40,7 @@ class Home : Fragment() {
     private var nameOfFile : TextView? = null
     private var btn : Button? = null
     private var simpleChronometer : Chronometer? = null
-    private var fileUrl : String? = null
+    private var fileNumNodes : String? = null
     private var fileName : String? = null
 
     //checking database for prev initiated print
@@ -84,7 +84,7 @@ class Home : Fragment() {
             btn?.setOnClickListener{
 
                 //set local variables to shared variable values
-                fileUrl = sharedViewModel.readFileNumLines()
+                fileNumNodes = sharedViewModel.readFileNumLines()
                 fileName = sharedViewModel.readFileName()
 
                 //if print has not started allow, send print command to FB
@@ -92,7 +92,7 @@ class Home : Fragment() {
 
                     //initialize database reference variable and update FB command print node
                     database = FirebaseDatabase.getInstance().getReference("Start Print").child("Command Print")
-                    val commencePrint = BeginPrint("false","true", fileUrl,fileName)
+                    val commencePrint = BeginPrint("false","true", fileNumNodes,fileName)
                     database.setValue(commencePrint).addOnSuccessListener {
                         Toast.makeText(activity, "Begin Print!", Toast.LENGTH_LONG).show()
                     }.addOnFailureListener {
@@ -114,7 +114,7 @@ class Home : Fragment() {
 
                 //updating local variables and display as well as shared variables
                 nameOfFile?.setText("Select File")
-                fileUrl = "null" //possibly remove/delete
+                fileNumNodes = "null"
                 sharedViewModel.setFileName("")
                 sharedViewModel.setFileNumLines("")
                 sharedViewModel.setHasFile(false)
@@ -170,7 +170,7 @@ class Home : Fragment() {
     private fun getPrintStatus() {
 
         //set FB database reference variable and listen for updates
-        database = FirebaseDatabase.getInstance().getReference("Start Print").child("Command Print") //testing please delete
+        database = FirebaseDatabase.getInstance().getReference("Start Print").child("Command Print")
         val postListenerSP = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
