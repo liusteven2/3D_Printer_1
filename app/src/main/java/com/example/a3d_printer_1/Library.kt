@@ -64,7 +64,7 @@ class Library : Fragment() {
     private var fileName: String? = null
     private var gcodeFile: gcodeFileClass? = null
     private var fileLengthReadable: String? = null
-    private var fileNameNow: String? = null
+    private var fileDateNow: String? = null
 
     //creating recyclerview and receiving information from firebase
     private lateinit var userRecyclerView: RecyclerView
@@ -111,6 +111,7 @@ class Library : Fragment() {
         val getFile = registerForActivityResult(ActivityResultContracts.GetContent(),
             ActivityResultCallback {
 
+//              V1 4/23 ================================================================================================================================
                 //used for pulling file info, deconstructed in "Upload()" function
                 if (it != null) {
                     fileUri = it
@@ -136,72 +137,148 @@ class Library : Fragment() {
                         with(builder) {
                             setTitle("Enter name of file!")
                             setPositiveButton("OK") { dialog, which ->
-                                uploadFile() //function to set up relative file info
 
-                                //file transfer loading visual
-                                val progressDialog = ProgressDialog(activity)
-                                progressDialog.setMessage("Uploading File...")
-                                progressDialog.setCancelable(false)
-                                progressDialog.show()
-
-                                //if user does not input name, default to internal file name
+//                               if user does not input name, default to internal file name
                                 if (editText.text.toString() == "") {
-                                    fileName = internalFileName.substring(0, internalFileName.indexOf(".gcode"))
+                                    fileName = internalFileName.substring(0, internalFileName.lastIndexOf(".gcode")).replace(".","_")
                                 } else {
                                     fileName = editText.text.toString()
                                 }
 
-                                //open selected file, parse, and send to FB
-                                val inputStream = it?.let { it1 -> activity?.contentResolver?.openInputStream(it1) }
-                                val reader: BufferedReader? = BufferedReader(InputStreamReader(inputStream))
-                                var line: String? = reader?.readLine()
-                                var i_line: Int = 1
-                                val stringBuilder = StringBuilder()
-                                i_fb_line = 1
 
-                                //if not at the end of file
-                                while (line != null) {
+                                database.addListenerForSingleValueEvent(object: ValueEventListener {
+                                    override fun onDataChange(snapshot: DataSnapshot) {
+                                        if (!snapshot.hasChild(fileName!!)) {
+                                            uploadFile() //function to set up relative file info
 
-                                    //parse every 100 gcode lines into a single FB database node
-                                    if (i_line % 100 < 100) {
+                                            //file transfer loading visual
+                                            val progressDialog = ProgressDialog(activity)
+                                            progressDialog.setMessage("Uploading File...")
+                                            progressDialog.setCancelable(false)
+                                            progressDialog.show()
 
-                                        //only read pertinent file lines
-                                        if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
-                                            i_line = i_line?.inc()
 
-                                            //ignore gcode comments after instruction
-                                            if (line.indexOf(';') > 0) {
-                                                line = line.substring(0, line.indexOf(';'))
+                                            //open selected file, parse, and send to FB
+                                            val inputStream = it?.let { it1 -> activity?.contentResolver?.openInputStream(it1) }
+                                            val reader: BufferedReader? = BufferedReader(InputStreamReader(inputStream))
+                                            var line: String? = reader?.readLine()
+                                            var i_line: Int = 1
+                                            val stringBuilder = StringBuilder()
+                                            i_fb_line = 1
+
+                                            //if not at the end of file
+                                            while (line != null) {
+
+                                                //parse every 100 gcode lines into a single FB database node
+                                                if (i_line % 100 < 100) {
+
+                                                    //only read pertinent file lines
+                                                    if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+                                                        i_line = i_line?.inc()
+
+                                                        //ignore gcode comments after instruction
+                                                        if (line.indexOf(';') > 0) {
+                                                            line = line.substring(0, line.indexOf(';'))
+                                                        }
+
+                                                        stringBuilder.append(line) //appending parsed gcode lines for upload
+                                                        stringBuilder.append("/") //use '/' as delimiter
+                                                    }
+                                                }
+
+                                                //if 100 lines parsed, send to FB into single node
+                                                if (i_line % 100 == 0) {
+                                                    if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+//                                                        if(fileName == "") fileName = internalFileName
+                                                        databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnFailureListener(){
+                                                            Toast.makeText(activity, "Something went wrong, please try to add a file name", Toast.LENGTH_LONG).show()
+                                                        }
+                                                        i_fb_line = i_fb_line.inc() //count number of nodes
+                                                        stringBuilder.clear() //clear parsed gcode string
+                                                    }
+                                                }
+
+                                                line = reader?.readLine() //iterate to next line
+
+                                                //if at the end of file perform final FB upload
+                                                if (line == null) {
+                                                    databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnSuccessListener {
+                                                        if (progressDialog.isShowing) progressDialog.dismiss()
+                                                        Toast.makeText(activity, "File Upload Success!", Toast.LENGTH_SHORT).show()
+                                                    }.addOnFailureListener{
+                                                        if (progressDialog.isShowing) progressDialog.dismiss()
+                                                        Toast.makeText(activity, "File Upload Failed!", Toast.LENGTH_SHORT).show()
+                                                    }
+                                                    stringBuilder.clear()
+                                                }
                                             }
 
-                                            stringBuilder.append(line) //appending parsed gcode lines for upload
-                                            stringBuilder.append("/") //use '/' as delimiter
+                                        } else {
+                                            Toast.makeText(activity, "Cancelled: File already exists!", Toast.LENGTH_LONG).show()
                                         }
                                     }
 
-                                    //if 100 lines parsed, send to FB into single node
-                                    if (i_line % 100 == 0) {
-                                        if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
-                                            databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString())
-                                            i_fb_line = i_fb_line.inc() //count number of nodes
-                                            stringBuilder.clear() //clear parsed gcode string
-                                        }
+                                    override fun onCancelled(error: DatabaseError) {
                                     }
+                                })
+//                                V2 4/23 END================================================================================================================================
 
-                                    line = reader?.readLine() //iterate to next line
-
-                                    //if at the end of file perform final FB upload
-                                    if (line == null) {
-                                        databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnSuccessListener {
-                                            if (progressDialog.isShowing) progressDialog.dismiss()
-                                            Toast.makeText(activity, "File Upload Success!", Toast.LENGTH_SHORT).show()
-                                        }.addOnFailureListener{
-                                            if (progressDialog.isShowing) progressDialog.dismiss()
-                                            Toast.makeText(activity, "File Upload Failed!", Toast.LENGTH_SHORT).show()
-                                        }
-                                        stringBuilder.clear()
-                                    }
-                                }
+//                                ORIGNAL 4/23 ================================================================================================================================
+//                                //open selected file, parse, and send to FB
+//                                val inputStream = it?.let { it1 -> activity?.contentResolver?.openInputStream(it1) }
+//                                val reader: BufferedReader? = BufferedReader(InputStreamReader(inputStream))
+//                                var line: String? = reader?.readLine()
+//                                var i_line: Int = 1
+//                                val stringBuilder = StringBuilder()
+//                                i_fb_line = 1
+//
+//                                //if not at the end of file
+//                                while (line != null) {
+//
+//                                    //parse every 100 gcode lines into a single FB database node
+//                                    if (i_line % 100 < 100) {
+//
+//                                        //only read pertinent file lines
+//                                        if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+//                                            i_line = i_line?.inc()
+//
+//                                            //ignore gcode comments after instruction
+//                                            if (line.indexOf(';') > 0) {
+//                                                line = line.substring(0, line.indexOf(';'))
+//                                            }
+//
+//                                            stringBuilder.append(line) //appending parsed gcode lines for upload
+//                                            stringBuilder.append("/") //use '/' as delimiter
+//                                        }
+//                                    }
+//
+//                                    //if 100 lines parsed, send to FB into single node
+//                                    if (i_line % 100 == 0) {
+//                                        if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+//                                            if(fileName == "") fileName = internalFileName
+//                                            databaseParsedLines.child(internalFileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnFailureListener(){
+//                                                Toast.makeText(activity, "Something went wrong, please try to add a file name", Toast.LENGTH_LONG).show()
+//                                            }
+//                                            i_fb_line = i_fb_line.inc() //count number of nodes
+//                                            stringBuilder.clear() //clear parsed gcode string
+//                                        }
+//                                    }
+//
+//                                    line = reader?.readLine() //iterate to next line
+//
+//                                    //if at the end of file perform final FB upload
+//                                    if (line == null) {
+//                                        databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString()).addOnSuccessListener {
+//                                            if (progressDialog.isShowing) progressDialog.dismiss()
+//                                            Toast.makeText(activity, "File Upload Success!", Toast.LENGTH_SHORT).show()
+//                                        }.addOnFailureListener{
+//                                            if (progressDialog.isShowing) progressDialog.dismiss()
+//                                            Toast.makeText(activity, "File Upload Failed!", Toast.LENGTH_SHORT).show()
+//                                        }
+//                                        stringBuilder.clear()
+//                                    }
+//                                }
+//                                ORIGNAL 4/23 END ================================================================================================================================
                             }
                             setNegativeButton("Cancel") { dialog, which ->
                                 Toast.makeText(activity, "File Upload Canceled", Toast.LENGTH_SHORT)
@@ -343,7 +420,7 @@ class Library : Fragment() {
         //setting and formatting upload timestamp
         val formatter = SimpleDateFormat("MM/dd/yyyy, HH:mm:ss", Locale.getDefault())
         val now = Date()
-        fileNameNow = formatter.format(now)
+        fileDateNow = formatter.format(now)
 
         //used only for easily pulling size info, no time to re-implement and test
         storage = FirebaseStorage.getInstance().getReference("New Print Files/"+fileName)
@@ -356,7 +433,7 @@ class Library : Fragment() {
         uploadTask.addOnSuccessListener{
 
             //create gcodeFileClass object to send to FB database
-            gcodeFile = gcodeFileClass(fileName, i_fb_line.toString(), fileNameNow.toString(), fileLengthReadable.toString())
+            gcodeFile = gcodeFileClass(fileName, i_fb_line.toString(), fileDateNow.toString(), fileLengthReadable.toString())
             database.child(fileName!!).setValue(gcodeFile).addOnSuccessListener {
 
                 //refresh tab to ensure variable and visuals are up to date
@@ -367,6 +444,15 @@ class Library : Fragment() {
         }
     }
 
+    private fun findFileInList(fileName: String, arrayList: ArrayList<gcodeFileClass>): Boolean {
+        for (obj in arrayList) {
+            val memberVal = obj.name
+            if (memberVal == fileName) {
+                return true
+            }
+        }
+        return false
+    }
 
     //helper function to handle file size formatting
     fun Long.readableFormat(): String {
