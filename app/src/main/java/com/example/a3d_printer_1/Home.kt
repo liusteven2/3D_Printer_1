@@ -146,7 +146,7 @@ class Home : Fragment() {
     private fun getFormattingData() {
 
         //set FB database reference variable and listen for updates
-        databasePC = FirebaseDatabase.getInstance().reference.child("Printer Formatting Home").child("Format")
+        databasePC = FirebaseDatabase.getInstance().reference.child("Printer Formatting Test").child("Format")
         val postListener = object : ValueEventListener {
             @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -177,6 +177,7 @@ class Home : Fragment() {
                 //get print status, if complete, notify user and reset internal and FB variables/nodes
                 val commandPrint = snapshot.getValue<BeginPrint>()
                 prevPrintCompleted = commandPrint!!.print_complete.toString()
+
                 if (prevPrintCompleted == "true") {
 
                     //resetting variables and updating visual tools
@@ -190,16 +191,16 @@ class Home : Fragment() {
                     btn?.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30F)
                     true
 
+                    //reset FB database values
+                    val commencePrint = BeginPrint("", "false","","")
+                    database.setValue(commencePrint)
+
                     //display dialog to notify user print completion
                     if (isAdded) {
                         val builder = AlertDialog.Builder(requireContext())
                         with(builder) {
                             setTitle("Print Completed!")
                             setPositiveButton("OK") { dialog, which ->
-
-                                //reset FB database values
-                                val commencePrint = BeginPrint("", "false","","")
-                                database.setValue(commencePrint)
 
                                 //refresh tab to ensure variable and visuals are up to date
                                 fragmentManager?.beginTransaction()?.replace(R.id.frame_layout,Home())?.commit()
