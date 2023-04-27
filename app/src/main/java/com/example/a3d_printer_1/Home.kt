@@ -153,9 +153,33 @@ class Home : Fragment() {
 
                 //update display tools with received FB updated values
                 val pc = snapshot.getValue<PrinterControls>()
+                var setText = pc?.x_pos.toString()+"|"+pc?.y_pos.toString()+"|"+pc?.z_pos.toString() //visual handle int to float
+                var setXText = ""
+                var setYText = ""
+                var setZYext = ""
                 bedTempDisplay?.setText(pc?.bed_temp.toString()+"\u00B0")
                 extTempDisplay?.setText(pc?.ext_temp.toString()+"\u00B0")
-                extPosDisplay?.setText(pc?.x_pos.toString()+"."+pc?.y_pos.toString()+"."+pc?.z_pos.toString())
+                if ((pc?.x_pos.toString() == "") || (pc?.x_pos.toString() == "") || (pc?.y_pos.toString() == "")){
+                    setText = "0.00"+"|"+"0.00"+"|"+"0.00"
+                } else if ((pc?.x_pos.toString().indexOf('.',0) == -1) || ((pc?.y_pos.toString().indexOf('.',0) == -1)) || (pc?.z_pos.toString().indexOf('.',0) == -1)){
+                    if (pc?.x_pos.toString().indexOf('.',0) == -1) {
+                        setXText = pc?.x_pos.toString() + ".00"
+                    } else {
+                        setXText = pc?.x_pos.toString()
+                    }
+                    if (pc?.y_pos.toString().indexOf('.',0) == -1) {
+                        setYText = pc?.y_pos.toString() + ".00"
+                    } else {
+                        setYText = pc?.y_pos.toString()
+                    }
+                    if (pc?.z_pos.toString().indexOf('.',0) == -1) {
+                        setZYext = pc?.z_pos.toString() + ".00"
+                    } else {
+                        setZYext = pc?.z_pos.toString()
+                    }
+                    setText = setXText + "|" + setYText + "|" + setZYext
+                }
+                extPosDisplay?.setText(setText)
                 fanSpeedDisplay?.setText(pc?.fan_speed.toString())
                 simpleChronometer?.start()
             }

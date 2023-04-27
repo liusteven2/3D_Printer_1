@@ -172,11 +172,14 @@ class Library : Fragment() {
                                                 if (i_line % 100 < 100) {
 
                                                     //only read pertinent file lines
-                                                    if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+                                                    if ((line.startsWith("G")) or (line.firstOrNull() == 'M')) {
                                                         i_line = i_line?.inc()
 
+                                                        if (line.indexOf('E') > 0) {
+                                                            line = "G0 " + line.substring(3, line.indexOf('E'))
+                                                        }
                                                         //ignore gcode comments after instruction
-                                                        if (line.indexOf(';') > 0) {
+                                                        else if (line.indexOf(';') > 0) {
                                                             line = line.substring(0, line.indexOf(';'))
                                                         }
 
@@ -187,7 +190,7 @@ class Library : Fragment() {
 
                                                 //if 100 lines parsed, send to FB into single node
                                                 if (i_line % 100 == 0) {
-                                                    if ((line.firstOrNull() == 'G') or (line.firstOrNull() == 'M')) {
+                                                    if ((line.startsWith("G")) or (line.firstOrNull() == 'M')) {
                                                         databaseParsedLines.child(fileName!!).child(i_fb_line.toString()).setValue(stringBuilder.toString())
                                                         i_fb_line = i_fb_line.inc() //count number of nodes
                                                         stringBuilder.clear() //clear parsed gcode string
